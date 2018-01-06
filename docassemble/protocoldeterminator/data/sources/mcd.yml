@@ -1,0 +1,147 @@
+object: DAObject
+module: docassemble.base.util
+items:
+  - name: 
+      object: DAObject
+      item:
+        name: Private Housing
+    mcdid: A1
+    summary: Private landlord-tenant; post mortgage foreclosure; post contract for deed cancellation;
+    code: ORC Chapter 5321
+    codelink: http://codes.ohio.gov/orc/5321
+    regulations: 
+    regulationslink: 
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: Mobile Home Lot Rental
+    mcdid: A2
+    summary: Tenant owns mobile home and rents lot from park
+    code: ORC Chapter 4781
+    codelink: http://codes.ohio.gov/orc/4781
+    regulations: 
+    regulationslink: 
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: Section 8 Certificates and Vouchers
+    mcdid: A3
+    summary: Tenant obtains subsidy from public housing authority Section 8 office and finds private housing which PHA subsidizes. Subsidy stays with the tenant unless terminated by PHA. Tenant pays about 30% of income for rent.
+    code: 42 U.S.C. §§1437f
+    codelink: https://www.law.cornell.edu/uscode/text/42/1437f
+    regulations: 24 C.F.R. Parts 982
+    regulationslink: https://www.law.cornell.edu/cfr/text/24/part-982
+    handbook: Local Admin Plan
+    handbooklink: https://www.hud.gov/program_offices/public_indian_housing/pha
+  - name: 
+      object: DAObject
+      item:
+        name: HUD Subsidized Projects
+    mcdid: A4
+    summary: Subsidy stays with private landlord. Tenant pays about 30% of income for rent.
+    code: 42 U.S.C. §§1437f
+    codelink: https://www.law.cornell.edu/uscode/text/42/1437f
+    regulations: 
+    regulationslink: 
+    handbook: HUD Handbook 4350.3
+    handbooklink: https://www.hud.gov/program_offices/administration/hudclips/handbooks/hsgh/4350.3
+  - name: 
+      object: DAObject
+      item:
+        name: HUD Care Programs
+    mcdid: A4X
+    summary: Subsidy stays with private landlord. Tenant pays about 30% of income for rent.
+    code: 
+    codelink: 
+    regulations: 24 C.F.R. Parts 574, 578, 582, and 583
+    regulationslink: https://www.law.cornell.edu/cfr/text/24/part-574
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: Moderate Rehabilitation Projects
+    mcdid: A5
+    summary: Subsidy stays with private landlord. Tenant applies with public housing authority (PHA). Tenant pays about 30% of income for rent.
+    code: 
+    codelink: 
+    regulations: 24 C.F.R. Parts 882
+    regulationslink: https://www.law.cornell.edu/cfr/text/24/part-882
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: HUD HOME Investment Partnerships Program
+    mcdid: A5X
+    summary: Subsidy stays with private landlord. Tenant pays about 30% of income for rent.
+    code: 
+    codelink: 
+    regulations: 24 C.F.R. Part 92
+    regulationslink: https://www.law.cornell.edu/cfr/text/24/part-92
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: Project Based Certificate Projects
+    mcdid: A6
+    summary: Subsidy stays with private landlord. Tenant applies with public housing authority (PHA). Tenant pays about 30% of income for rent.
+    code: 
+    codelink: 
+    regulations: 24 C.F.R. Parts 983
+    regulationslink: https://www.law.cornell.edu/cfr/text/24/part-983
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: IRS Low-Income Housing Tax Credit
+    mcdid: A6X
+    summary: Subsidy stays with private landlord. Tenant pays about 30% of income for rent.
+    code: 26 U.S.C. A. § 42 
+    codelink: https://www.law.cornell.edu/uscode/text/26/42
+    regulations: IRS Regulations and Guidance at OHFA
+    regulationslink: https://ohiohome.org/compliance/irs.aspx
+    handbook: 
+    handbooklink: 
+  - name: 
+      object: DAObject
+      item:
+        name: Rural Housing Service Projects
+    mcdid: A7
+    summary: Outside the Twin Cities. Subsidy stays with private landlord. Tenant pays about 30% of income for rent.
+    code: 
+    codelink: 
+    regulations: 7 C.F.R. Part 3560
+    regulationslink: https://www.law.cornell.edu/cfr/text/7/part-3560
+    handbook: HB-2-3560 MFH ASSET MANAGEMENT HANDBOOK
+    handbooklink: https://www.rd.usda.gov/publications/regulations-guidelines/handbooks#hb35602
+  - name: 
+      object: DAObject
+      item:
+        name: Rural Housing Service Receiving HUD Subsidies
+    mcdid: A7X
+    summary: Outside the Twin Cities. Subsidy stays with private landlord. Tenant pays about 30% of income for rent.
+    code: 
+    codelink: 
+    regulations: 24 C.F.R. Part 884
+    regulationslink: https://www.law.cornell.edu/cfr/text/7/part-3560
+    handbook: HUD Handbook 4350.3
+    handbooklink: https://www.hud.gov/program_offices/administration/hudclips/handbooks/hsgh/4350.3
+  - name: 
+      object: DAObject
+      item:
+        name: Public Housing
+    mcdid: A8
+    summary: Subsidy stays with public housing authority (PHA), which is the landlord. Tenant pays about 30% of income for rent.
+    code: 42 U.S.C. §1437d
+    codelink: https://www.law.cornell.edu/uscode/text/42/1437d
+    regulations: 24 C.F.R. Parts 966, 965
+    regulationslink: https://www.law.cornell.edu/cfr/text/24/part-966
+    handbook: Local ACOP
+    handbooklink: https://www.hud.gov/program_offices/public_indian_housing/pha

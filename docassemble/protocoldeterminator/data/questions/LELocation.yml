@@ -1,0 +1,60 @@
+metadata:
+  title: Location determination
+  short title: Geolocate
+  documentation: "https://docassemble.org/docs/objects.html#Address.geolocate"
+
+---
+modules:
+  - docassemble.base.util
+---
+objects:
+  - the_address: Address
+  - courtchoices: DAList
+
+---
+objects from file:
+  - courtinfo: courtlist.yml
+---
+mandatory: True
+question: |
+  Enter an address
+fields:
+  - Address: the_address.address
+  - Unit: the_address.unit
+    required: False
+  - City: the_address.city
+  - State: the_address.state
+    default: Ohio
+
+---
+mandatory: True
+sets: the_address.county
+code: |
+  the_address.geolocate()
+---
+mandatory: True
+code: |
+  courtchoices.gathered = True
+  courtchoices.auto_gather = False
+---
+mandatory: True
+code: |
+  for i in courtinfo:
+    if the_address.county == i.county:
+      courtchoices.append(i.name)
+      
+---
+question: What court?
+fields: 
+  - The court is: court
+    datatype: object
+    choices: courtchoices
+    
+---
+code: |
+  for i in courtinfo:
+    if court == i.name:
+      fundinggroup = i.fundinggroup
+      appeals = i.appeals
+      website = i.website
+      auditor = i.auditor

@@ -1,0 +1,23 @@
+metadata:
+  title: Stage
+  short title: LEstage
+---
+modules:
+  - docassemble.base.util
+---
+question: |
+  Stage
+field: stage
+choices:
+  - Orally Threatened
+  - Received Notice Less Than 10 Days Ago
+  - Received Notice More Than 10 Days Ago
+  - Hearing More Than 2 Business Days
+  - Received Court Papers
+  - Received Court Papers and Hearing More Than 7 Days
+  - Decision
+  - No hearings or deadlines within 60 days
+---
+
+
+

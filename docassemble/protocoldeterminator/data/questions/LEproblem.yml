@@ -1,0 +1,24 @@
+metadata:
+  title: Problem
+  short title: LEproblem
+---
+modules:
+  - docassemble.base.util
+---
+question: |
+  Problem
+field: problem
+choices:
+  - Lockout
+  - Utility Shutoff
+  - Eviction
+  - Conditions
+  - Voucher or Subsidy Termination
+  - Denied admission
+  - Return of security deposits
+  - Early lease termination
+  - Other rental housing issue
+---
+
+
+

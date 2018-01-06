@@ -1,0 +1,160 @@
+metadata:
+  title: Subsidized Housing determination
+  short title: LEsubsidizedhousing
+---
+modules:
+  - docassemble.base.util
+---
+objects from file:
+  - mcdo: mcd.yml
+---
+question: |
+  ${ typeofhousingunclear }Check the type of housing.
+subquestion: |
+  [Search by ${ the_address.zip } here](http://nhpd.preservationdatabase.org/Data)
+fields:
+  - Subsidy Name: subsidyname
+    choices:
+      - Section 8 or HUD PBRA
+      - HUD Insured
+      - HOME
+      - LIHTC
+      - Section 515
+      - Section 538
+      - State HFA 236
+      - Public Housing
+      - State Subsidy
+      - Not listed
+---
+question: |
+  Is there a more specific program listed?
+fields:
+  - HUD PBRA Subname: subsidysubname
+    show if:
+      code:
+        subsidyname == "Section 8 or HUD PBRA"
+    choices:
+    	- RAP
+      - PACslash202
+      - SEC 8 SR
+      - PDslash8 EXISTING
+      - 515slash8 SR
+      - PRACslash811
+      - PENSION FUND
+      - 202slash8 NC
+      - PDslash8 SR
+      - RENT SUPP
+      - PDslash8 MR
+      - 202slash162 SR
+      - UNASSTPRJ SCHAP
+      - PRESERVATION
+		  - PRACslash202
+      - LMSA
+      - HFDAslash8 SR
+      - OLD 202
+      - 202slash162 NC
+      - SEC 8 NC
+      - 202slash8 SR
+      - PACslash811
+      - 202slash162 MR
+      - 515slash8 NC
+      - HFDAslash8 NC
+  - HUD Insured Subname: subsidysubname
+    show if:
+      code:
+        subsidyname == "HUD Insured"
+    choices:
+    	- 202 DIRECT LOANslash ELDERLYslash PRE 1974
+      - 202slash8 DIRECT LOANslashELDERLY-HANDICAPPED
+      - 202slash162 DIRECT LOAN FOR HANDICAPPED WslashPAC
+      - 236J1slash 202 ELDERLY HSG
+      - 236J1slash223EslashLOWER INCOME FAMILIESslashDECLIN. AREA
+      - 236J1slash LOWER INCOME FAMILIES
+      - 241Fslash236 EQUITY LOAN
+  - LIHTC Subname: subsidysubname
+    show if:
+      code:
+        subsidyname == "LIHTC"
+    choices:
+    	- 4 Tax Credit
+      - 9 Tax Credit
+      - 4 and 9 Tax Credit
+  - RHS515 Subname: subsidysubname
+    show if:
+      code:
+        subsidyname == "RHS515"
+    choices:
+    	- 515 Rural Housing
+      - 514 OnFarm
+      - 514 OffFarm
+---
+code: |
+  if subsidyname == "Section 8 or HUD PBRA":
+    if "MR" not in subsidysubname:
+      mcdid = "A4"
+    else:
+      mcdid = "A5"
+  elif subsidyname == "HUD Insured":
+    mcdid = "A4"
+  elif subsidyname == "HOME":
+    mcdid = "A5X"
+  elif subsidyname == "LIHTC":
+    mcdid = "A6X"
+  elif subsidyname == "Section 515":
+    mcdid = "A7"
+  elif subsidyname == "Section 538":
+    mcdid = "A7"    
+  elif subsidyname == "State HFA 236":
+    mcdid = "A4"
+  elif subsidyname == "State Subsidy":
+    mcdid = "Unknown"
+  elif subsidyname == "Not listed":
+    mcdid = "Not listed"
+  elif subsidyname == "Public Housing":
+    typeofhousing = "Public"
+    mcdid = "A8"
+  else:
+    mcdid = "Unknown"
+---
+question: |
+  Copy the owner of the property in NHPD Database or type Unknown.
+subquestion: |
+  [Search by ${ the_address.zip } here](http://nhpd.preservationdatabase.org/Data)
+fields:
+  - Owner: opposingparty
+---
+mandatory: True
+code: |
+  for mcd in mcdo:
+    if mcdid == mcd.mcdid:
+      mcdsummary = mcd.summary
+      mcdcode = mcd.code
+      mcdcodelink = mcd.codelink
+      mcdregulations = mcd.regulations
+      mcdregulationslink = mcd.regulationslink
+      mcdhandbook = mcd.handbook
+      mcdhandbooklink = mcd.handbooklink
+---
+code: |
+  if typeofhousing == "Private":
+    mcdid = "A1"
+  elif typeofhousing == "Manufactured housing":
+    mcdid = "A2"
+  elif typeofhousing == "Voucher":
+    mcdid = "A3"
+  elif typeofhousing == "Public":
+    mcdid = "A8"
+  else:
+    typeofhousingunclear = "The type of housing is unclear."
+---
+question: |
+  What type of housing?
+field: typeofhousing
+dropdown:
+  - Private
+  - Manufactured housing
+  - Public
+  - Voucher
+  - Other Subsidized Housing
+  - Unsure
+  - Other

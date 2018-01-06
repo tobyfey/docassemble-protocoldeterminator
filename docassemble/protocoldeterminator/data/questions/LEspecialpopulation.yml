@@ -1,0 +1,30 @@
+metadata:
+  title: Special Population Determination
+  short title: LEspecialpopulation
+---
+modules:
+  - docassemble.base.util
+---
+question: |
+  Special Populations
+field: special_population
+choices:
+	- Veteran
+	- Active Duty
+	- Senior 60plus
+	- Senior in Household
+	- Disability determination
+	- Self identified disability
+	- Domestic Violence Victim
+	- Child under 12 in household
+	- Receives Public Benefits
+	- Income Below 200 Percent
+	- Income Below 150 Percent
+   - Income Below 125 Percent
+	- TANF Eligible
+	- TXX Eligible
+	- None
+---
+
+
+

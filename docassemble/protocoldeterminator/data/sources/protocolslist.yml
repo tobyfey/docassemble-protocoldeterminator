@@ -1,0 +1,441 @@
+object: DAObject
+module: docassemble.base.util
+items:
+  - name:
+      object: DAObject
+    protocolnumber: HCED1a
+    counties:
+      - Ashland County
+      - Auglaize County
+      - Champaign County
+      - Clark County
+      - Crawford County
+      - Darke County
+      - Defiance County
+      - Erie County
+      - Fulton County
+      - Greene County
+      - Hancock County
+      - Hardin County
+      - Henry County
+      - Huron County
+      - Logan County
+      - Mercer County
+      - Miami County
+      - Montgomery County
+      - Ottawa County
+      - Paulding County
+      - Preble County
+      - Putnam County
+      - Richland County
+      - Sandusky County
+      - Seneca County
+      - Shelby County
+      - Van Wert County
+      - Williams County
+      - Wood County
+      - Wyandot County
+    typeofhousing:
+      - A1
+    specialpopulation:
+      - Senior in Household
+      - Child under 12 in household
+    problem:
+      - Lockout
+      - Utility Shutoff
+    destination: Housing and Comm. Econ. Dev.
+    facts: Client must have money to pay rent or would like to remain in unit.  Do not refer if utility shutoff is due to clients failure to pay an account in clients name AND client received valid prior notice from utility.
+  - name:
+      object: DAObject
+    protocolnumber: HCED1b
+    counties:
+      - Ashland County
+      - Auglaize County
+      - Champaign County
+      - Clark County
+      - Crawford County
+      - Darke County
+      - Defiance County
+      - Erie County
+      - Fulton County
+      - Greene County
+      - Hancock County
+      - Hardin County
+      - Henry County
+      - Huron County
+      - Logan County
+      - Mercer County
+      - Miami County
+      - Montgomery County
+      - Ottawa County
+      - Paulding County
+      - Preble County
+      - Putnam County
+      - Richland County
+      - Sandusky County
+      - Seneca County
+      - Shelby County
+      - Van Wert County
+      - Williams County
+      - Wood County
+      - Wyandot County
+    specialpopulation:
+      - Domestic Violence Victim
+    destination: Housing and Comm. Econ. Dev.
+    facts: The housing problem must be a result of domestic violence.
+  - name:
+      object: DAObject
+    protocolnumber: HCED2a
+    counties:
+      - Ashland County
+      - Auglaize County
+      - Champaign County
+      - Clark County
+      - Crawford County
+      - Darke County
+      - Defiance County
+      - Erie County
+      - Fulton County
+      - Greene County
+      - Hancock County
+      - Hardin County
+      - Henry County
+      - Huron County
+      - Logan County
+      - Mercer County
+      - Miami County
+      - Montgomery County
+      - Ottawa County
+      - Paulding County
+      - Preble County
+      - Putnam County
+      - Richland County
+      - Sandusky County
+      - Seneca County
+      - Shelby County
+      - Van Wert County
+      - Williams County
+      - Wood County
+      - Wyandot County
+    typeofhousing:
+      - A3
+      - A4
+      - A5
+      - A5X
+      - A6X
+      - A7
+      - A8
+    problem:
+      - Lockout
+      - Utility Shutoff
+    destination: Housing and Comm. Econ. Dev.
+    facts: Do not refer if utility shutoff is due to clients failure to pay an account in clients name AND client received valid prior notice from utility.
+  - name:
+      object: DAObject
+    protocolnumber: HCED2b
+    counties:
+      - Ashland County
+      - Auglaize County
+      - Champaign County
+      - Clark County
+      - Crawford County
+      - Darke County
+      - Defiance County
+      - Erie County
+      - Fulton County
+      - Greene County
+      - Hancock County
+      - Hardin County
+      - Henry County
+      - Huron County
+      - Logan County
+      - Mercer County
+      - Miami County
+      - Montgomery County
+      - Ottawa County
+      - Paulding County
+      - Preble County
+      - Putnam County
+      - Richland County
+      - Sandusky County
+      - Seneca County
+      - Shelby County
+      - Van Wert County
+      - Williams County
+      - Wood County
+      - Wyandot County
+    typeofhousing:
+      - A3
+      - A4
+      - A5
+      - A5X
+      - A6X
+      - A7
+      - A8
+    specialpopulation:
+      - Domestic Violence Victim
+    destination: Housing and Comm. Econ. Dev.
+    facts: The housing problem must be a result of domestic violence.
+  - name:
+      object: DAObject
+    protocolnumber: HCED2d
+    counties:
+      - Lucas County
+    typeofhousing:
+      - A8
+    problem:
+      - Denied admission
+    destination: Housing and Comm. Econ. Dev.
+    facts: Includes if client was told by LMHA not to bother applying for LMHA public housing due to their criminal record
+  - name:
+      object: DAObject
+    protocolnumber: HCED3
+    counties:
+      - Clark County
+      - Greene County
+      - Huron County
+      - Montgomery County
+    typeofhousing:
+      - A3
+    problem:
+      - Voucher or Subsidy Termination
+    stage:
+      - Received Notice Less Than 10 Days Ago
+      - Hearing More Than 2 Business Days
+      - Decision
+    destination: Housing and Comm. Econ. Dev.
+  - name:
+      object: DAObject
+    protocolnumber: LSP1a
+    counties:
+      - Lucas County
+    typeofhousing:
+      - A1
+      - A2
+    problem:
+      - Lockout
+      - Utility Shutoff
+    destination: LAWO Special Projects
+    facts: Do not refer if utility shut-off is due to client’s failure to pay an account in client’s name AND client received valid prior notice from utility or water company.  Do not refer if client just wants to sue for damages and does not want to live in rental anymore.
+  - name:
+      object: DAObject
+    protocolnumber: LSP1b
+    counties:
+      - Lucas County
+    typeofhousing:
+      - A1
+      - A2
+    specialpopulation:
+      - Senior 60plus
+      - Self identified disability
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers
+    destination: LAWO Special Projects
+    facts:
+  - name:
+      object: DAObject
+    protocolnumber: LSP1c
+    counties:
+      - Lucas County
+    court:
+      - Toledo Municipal Court
+    typeofhousing:
+      - A1
+      - A2
+    specialpopulation:
+      - Senior 60plus
+      - Self identified disability
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers
+    destination: LAWO Special Projects
+  - name:
+      object: DAObject
+    protocolnumber: LSP1d
+    counties:
+      - Lucas County
+    court:
+      - Toledo Municipal Court
+    typeofhousing:
+      - A1
+      - A2
+    specialpopulation:
+      - TANF Eligible
+      - TXX Eligible
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers
+    destination: LAWO Special Projects
+    facts: The Plaintiff is listed as a LLC, but the case was NOT filed by an attorney OR The client says the landlord accepted future rent after posting the 3-Day Notice to Leave.
+  - name:
+      object: DAObject
+    protocolnumber: LSP1e
+    counties:
+      - Lucas County
+    court:
+      - Sylvania Municipal Court
+      - Oregon Municipal Court
+      - Maumee Municipal Court
+    typeofhousing:
+      - A1
+      - A2
+    specialpopulation:
+      - TANF Eligible
+      - TXX Eligible
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers
+    destination: LAWO Special Projects
+    facts: If client appears to be TXX or TANF eligible case will be referred to special projects and Laura V will determine if the client is eligible for the funding.  Let the client know there is no guarantee LAWO will be able to represent.
+  - name:
+      object: DAObject
+    protocolnumber: LSP2a
+    counties:
+      - Lucas County
+    typeofhousing:
+      - A3
+      - A4
+      - A5
+      - A5X
+      - A6X
+      - A7
+      - A8
+    problem:
+      - Lockout
+      - Utility Shutoff
+    destination: LAWO Special Projects
+    facts: Do not refer if utility shut-off is due to client’s failure to pay an account in client’s name AND client received valid prior notice from utility or water company.  Do not refer if client just wants to sue for damages and does not want to live in rental anymore.
+  - name:
+      object: DAObject
+    protocolnumber: LSP2b
+    counties:
+      - Lucas County
+    court:
+      - Toledo Municipal Court
+    typeofhousing:
+      - A3
+      - A4
+      - A5
+      - A5X
+      - A6X
+      - A7
+      - A8
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers
+    destination: LAWO Special Projects
+  - name:
+      object: DAObject
+    protocolnumber: LSP2c
+    counties:
+      - Lucas County
+    court:
+      - Sylvania Municipal Court
+      - Oregon Municipal Court
+      - Maumee Municipal Court
+    typeofhousing:
+      - A3
+      - A4
+      - A5
+      - A5X
+      - A6X
+      - A7
+      - A8
+    specialpopulation:
+      - TANF Eligible
+      - TXX Eligible
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers
+    destination: LAWO Special Projects
+    facts: If client appears to be TXX or TANF eligible case will be referred to special projects and Laura V will determine if the client is eligible for the funding.  Let the client know there is no guarantee LAWO will be able to represent.
+  - name:
+      object: DAObject
+    protocolnumber: LSP3
+    counties:
+      - Lucas County
+    city:
+      - Toledo
+    typeofhousing:
+      - A3
+      - A8
+    problem:
+      - Voucher or Subsidy Termination
+      - Denied admission
+    stage:
+      - Hearing More Than 2 Business Days
+      - Received Notice Less Than 10 Days Ago
+    destination: LAWO Special Projects
+  - name:
+      object: DAObject
+    protocolnumber: LSP4
+    counties:
+      - Lucas County
+    city:
+      - Toledo
+    typeofhousing:
+      - A3
+    problem:
+      - Eviction
+    destination: LAWO Special Projects
+    facts: NOT straight referral protocol. Email Veronica with facts to see if this is case that should be referred to Special Projects.
+  - name:
+      object: DAObject
+    protocolnumber: LPB1
+    counties:
+      - Allen County
+    problem:
+      - Conditions
+      - Return of security deposits
+      - Early lease termination
+    destination: LAWO Pro Bono
+  - name:
+      object: DAObject
+    protocolnumber: LPB2
+    counties:
+      - Logan County
+      - Shelby County
+    typeofhousing:
+      - A1
+      - A2
+    specialpopulation:
+      - Income Below 125 Percent
+    problem:
+      - Conditions
+      - Return of security deposits
+      - Early lease termination
+    stage:
+      - No hearings or deadlines within 60 days
+    destination: LAWO Pro Bono
+    facts: Skype Clinic.  No Bed Bug Cases.
+  - name:
+      object: DAObject
+    protocolnumber: SenP1
+    counties:
+      - Montgomery County
+    specialpopulation:
+      - Senior 60plus
+    problem:
+      - Eviction
+    stage:
+      - Received Court Papers and Hearing More Than 7 Days
+    destination: LAWO Senior Projects
+    facts: Only refer if not referrable to LSP or HCED
+  - name:
+      object: DAObject
+    protocolnumber: SenP2
+    counties:
+      - Montgomery County
+    specialpopulation:
+      - Senior 60plus
+    problem:
+      - Conditions
+    destination: LAWO Senior Projects
+    facts: Only refer if not referrable to LSP or HCED

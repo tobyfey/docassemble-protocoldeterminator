@@ -1,0 +1,79 @@
+metadata:
+  title: LegalElements Output Screen
+  short title: LEOutput
+
+---
+modules:
+  - docassemble.base.util
+---
+include:
+  - LEproblem.yml
+  - LEstage.yml
+  - LEspecialpopulation.yml
+  - LEprotocols.yml
+  - LEsubsidizedhousing.yml
+  - LELocation.yml
+---
+mandatory: True
+question: |
+  Summary Screen
+subquestion: |
+  The address you provided is: 
+  
+  ${ the_address.block() } 
+  
+  % if the_address.attr('county'):
+  The address is located in
+  ${ the_address.county }.
+  % endif
+
+  ## Referral
+ 
+  Potential referrals include:
+  % for i in referral:
+  
+  ** ${ i.destination } **
+  ${ i.protocolnumber }
+  % if hasattr(i,'facts'):
+  
+  * ${ i.facts }
+  % endif
+  % endfor
+
+  % if stage == 'Received Court Papers' or 'Received Court Papers and Hearing More Than 7 Days' or 'Decision':
+
+  ## Local Information
+
+  [Click here to check the owner of the property.](${ auditor })
+  
+  The funding group is ${ fundinggroup }
+
+  The court is ${ court }, which is in the ${ appeals }.
+  
+  The court's website is [here](${ website })
+  % endif
+  
+  % if the_address.geolocate_success:
+   
+  ## Subsidized Housing Information
+  
+  **[McDonough ID](http://povertylaw.homestead.com/files/Reading/a0atenancytable.htm):** ${ mcdid }
+  
+  **Summary:** ${ mcdsummary }
+  
+  % if mcdhandbook:
+  **Handbook:** [${ mcdhandbook }](${ mcdhandbooklink })
+  % endif
+  
+  % if mcdregulations:
+  **Regulations:** [${ mcdregulations }](${ mcdregulationslink })
+  % endif
+  
+  % if mcdcode:
+  **Regulations:** [${ mcdcode }](${ mcdcodelink })
+  % endif
+  
+  % else:
+  The address could not be
+  geolocated.
+  % endif
