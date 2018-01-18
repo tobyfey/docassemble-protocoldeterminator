@@ -6,7 +6,7 @@ modules:
   - docassemble.base.util
 ---
 objects:
-  - referral: DAList
+  - referral: DASet
 ---
 objects from file:
   - protocols: protocolslist.yml
@@ -26,11 +26,12 @@ code: |
       if not hasattr(i,'opposingparty') or opposingparty in i.opposingparty:
         if not hasattr(i,'typeofhousing') or mcdid in i.typeofhousing:
           if not hasattr(i,'stage') or stage in i.stage:
-            if not hasattr(i, 'specialpopulation') or special_population in i.specialpopulation:
-              if not hasattr(i,'problem') or problem in i.problem:
-                if not hasattr(i,'court') or court in i.court:
-                  if not hasattr(i,'city') or the_address.city in i.city:
-                    referral.append(i)
+            if not hasattr(i,'problem') or problem in i.problem:
+              if not hasattr(i,'court') or court in i.court:
+                if not hasattr(i,'city') or the_address.city in i.city:
+                  for j in specialpopulations:
+                    if not hasattr(i, 'specialpopulation') or j in i.specialpopulation:
+                      referral.add(i)
 
 
            
