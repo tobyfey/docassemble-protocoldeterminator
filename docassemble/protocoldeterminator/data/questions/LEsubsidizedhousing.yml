@@ -34,49 +34,49 @@ fields:
       code:
         subsidyname == "Section 8 or HUD PBRA"
     choices:
-    	- RAP
-      - PACslash202
+      - RAP
+      - PAC/202
       - SEC 8 SR
-      - PDslash8 EXISTING
-      - 515slash8 SR
-      - PRACslash811
+      - PD/8 EXISTING
+      - 515/8 SR
+      - PRAC/811
       - PENSION FUND
-      - 202slash8 NC
-      - PDslash8 SR
+      - 202/8 NC
+      - PD/8 SR
       - RENT SUPP
-      - PDslash8 MR
-      - 202slash162 SR
+      - PD/8 MR
+      - 202/162 SR
       - UNASSTPRJ SCHAP
       - PRESERVATION
-		  - PRACslash202
+      - PRAC/202
       - LMSA
-      - HFDAslash8 SR
+      - HFDA/8 SR
       - OLD 202
-      - 202slash162 NC
+      - 202/162 NC
       - SEC 8 NC
-      - 202slash8 SR
-      - PACslash811
-      - 202slash162 MR
-      - 515slash8 NC
-      - HFDAslash8 NC
+      - 202/8 SR
+      - PAC/811
+      - 202/162 MR
+      - 515/8 NC
+      - HFDA/8 NC
   - HUD Insured Subname: subsidysubname
     show if:
       code:
         subsidyname == "HUD Insured"
     choices:
-    	- 202 DIRECT LOANslash ELDERLYslash PRE 1974
-      - 202slash8 DIRECT LOANslashELDERLY-HANDICAPPED
-      - 202slash162 DIRECT LOAN FOR HANDICAPPED WslashPAC
-      - 236J1slash 202 ELDERLY HSG
-      - 236J1slash223EslashLOWER INCOME FAMILIESslashDECLIN. AREA
-      - 236J1slash LOWER INCOME FAMILIES
-      - 241Fslash236 EQUITY LOAN
+    - 202 DIRECT LOAN/ ELDERLY/ PRE 1974
+      - 202/8 DIRECT LOAN/ELDERLY-HANDICAPPED
+      - 202/162 DIRECT LOAN FOR HANDICAPPED W/PAC
+      - 236J1/ 202 ELDERLY HSG
+      - 236J1/223E/LOWER INCOME FAMILIES/DECLIN. AREA
+      - 236J1/ LOWER INCOME FAMILIES
+      - 241F/236 EQUITY LOAN
   - LIHTC Subname: subsidysubname
     show if:
       code:
         subsidyname == "LIHTC"
     choices:
-    	- 4 Tax Credit
+      - 4 Tax Credit
       - 9 Tax Credit
       - 4 and 9 Tax Credit
   - RHS515 Subname: subsidysubname
@@ -84,7 +84,7 @@ fields:
       code:
         subsidyname == "RHS515"
     choices:
-    	- 515 Rural Housing
+      - 515 Rural Housing
       - 514 OnFarm
       - 514 OffFarm
 ---
