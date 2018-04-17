@@ -1,0 +1,93 @@
+metadata:
+  title: Special Population Determination
+  short title: LEspecialpopulation
+---
+modules:
+  - docassemble.base.util
+---
+objects:
+ - fpl: DADict
+ - user_salary: PeriodicValue
+ - specialpopulations: DASet
+---
+mandatory: True
+code: |
+  specialpopulations.gathered = True
+  specialpopulations.auto_gather = False
+---
+question: |
+  Special Populations
+fields:
+  - "Select any appropriate": specialpopulationdict
+    datatype: checkboxes
+    code: |
+      specialpopulationlist
+---
+mandatory: True
+code: |
+  specialpopulationlist = ['Veteran', 'Active Duty', 'Senior 60plus', 'Senior in Household', 'Disability determination', 'Self identified disability', 'Domestic Violence Victim', 'Child under 12 in household', 'Receives Public Benefits']
+---
+mandatory: True
+code: |
+  for k,v in specialpopulationdict.iteritems():
+    if v:
+      specialpopulations.add(k)
+---
+mandatory: True
+code: |
+  if fplpercent < 200:
+    specialpopulations.add('Income Below 200 Percent')
+  if fplpercent < 150:
+    specialpopulations.add('Income Below 150 Percent') 
+  if fplpercent < 125:
+    specialpopulations.add('Income Below 125 Percent')
+  if fplpercent < 200:
+    if specialpopulationdict['Child under 12 in household']:
+      if specialpopulationdict['Receives Public Benefits']:
+        specialpopulations.add('TANF Eligible')
+  if fplpercent < 150:
+    if specialpopulationdict['Senior 60plus']:
+      specialpopulations.add('TXX Eligible')
+  if fplpercent < 150:
+    if specialpopulationdict['Disability determination']:
+      specialpopulations.add('TXX Eligible')
+---
+question: |
+  What is your income?
+fields:
+  - Amount: user_salary.value
+    datatype: currency
+  - Period: user_salary.period
+    default: 1
+    choices:
+      - Annually: 1
+      - Monthly: 12
+      - Per week: 54
+---
+question: |
+  How many household members?
+fields:
+  - Household members: household_members
+    datatype: integer
+---
+code: |
+
+  fpl = {1: 12060, 2: 16240, 3: 20420, 4: 24600, 5: 28780, 6: 32960, 7: 37140, 8: 41320}
+
+  fplper = user_salary.value / fpl[household_members]
+  fplpercent = fplper * 100
+---
+question: |
+  Do you know the federal property level?
+yesno: federalpropertylevelknown
+
+---
+if: |
+  federalpropertylevelknown
+question: |
+  Please fill in the following information.
+fields:
+  - "What's the federal poverty level?": fplpercent
+    datatype: number
+    
+
