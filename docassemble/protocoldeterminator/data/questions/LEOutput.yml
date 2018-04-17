@@ -9,7 +9,7 @@ modules:
 include:
   - LEproblem.yml
   - LEstage.yml
-  - LEspecialpopulation.yml
+  - LESpecialPopulationTest.yml
   - LEprotocols.yml
   - LEsubsidizedhousing.yml
   - LELocation.yml
@@ -18,6 +18,8 @@ mandatory: True
 question: |
   Summary Screen
 subquestion: |
+  ${ specialpopulations }
+  
   The address you provided is: 
   
   ${ the_address.block() } 
