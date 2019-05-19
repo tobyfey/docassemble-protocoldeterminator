@@ -1,0 +1,304 @@
+metadata:
+  title: Protocol Determinator
+  short title: ProDe
+---
+modules:
+  - docassemble.base.util
+  - .airtable
+  - .auth
+  - .params
+---
+imports:
+  - requests
+  - yaml
+  - json
+---
+objects:
+  - referrallist: DASet
+  - referraltest: DASet
+  - relevantFacts: DAList
+  - relevantLegalIssue: DAList
+  - relevantSpecialPopulations: DAList
+---
+mandatory: True
+code: |
+  referrallist.gathered = True
+  referrallist.auto_gather = False
+  referraltest.gathered = True
+  referraltest.auto_gather = False
+  relevantSpecialPopulations.auto_gather = False
+  relevantLegalIssue.auto_gather = False
+  relevantFacts.auto_gather = False
+---
+code: |
+  Citylist = list()
+  for something in Cityapi:
+    if 'City' in something['fields']:
+      Citylist.append({something['id']:something['fields']['City']})
+---
+code: |
+  Countieslist = list()
+  for something in Countiesapi:
+    Countieslist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  Courtlist = list()
+  for something in Courtapi:
+    Courtlist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  Factslist = list()
+  for something in Factsapi:
+    Factslist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  FactsDoNotReferlist = list()
+  for something in FactsDoNotReferapi:
+    if 'FactsDoNotRefer' in something['fields']:
+      FactsDoNotReferlist.append({something['id']:something['fields']['FactsDoNotRefer']})  
+---
+code: |
+  LegalIssuelist = list()
+  for something in LegalIssueapi:
+    LegalIssuelist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  SpecialPopulationslist = list()
+  for something in SpecialPopulationsapi:
+    SpecialPopulationslist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  for something in SpecialPopulationsapi:
+    if relevantSpecialPopulationsdict[something['id']]:
+      relevantSpecialPopulations.append(something['id'])
+  relevantSpecialPopulations.gathered = True
+---
+code: |
+  OpposingPartylist = list()
+  for something in OpposingPartyapi:
+    OpposingPartylist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  Stagelist = list()
+  for something in Stageapi:
+    Stagelist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  TypeOfHousinglist = list()
+  for something in TypeOfHousingapi:
+    TypeOfHousinglist.append({something['id']:something['fields']['Name']})
+---
+code: |
+  ZipCodelist = list()
+  for something in ZipCodeapi:
+    if 'ZipCode' in something['fields']:
+      ZipCodelist.append({something['id']:something['fields']['ZipCode']})
+---
+code: |
+  api_key=get_config('airtable api key')
+  base_key = 'applYpmjTBTqhkYkO'
+---
+code: |
+  table_name = 'LegalIssue'
+  api_response = Airtable(base_key, table_name, api_key)
+  LegalIssueapi = api_response.get_all()
+---
+code: |
+  table_name = 'Protocols'
+  api_response = Airtable(base_key, table_name, api_key)
+  ZipCodeapi = api_response.get_all()
+
+---
+code: |
+  table_name = 'Protocols'
+  api_response = Airtable(base_key, table_name, api_key)
+  FactsDoNotReferapi = api_response.get_all()
+
+---
+code: |
+  table_name = 'Protocols'
+  api_response = Airtable(base_key, table_name, api_key)
+  Cityapi = api_response.get_all()
+---
+code: |
+  table_name = 'Counties'
+  api_response = Airtable(base_key, table_name, api_key)
+  Countiesapi = api_response.get_all()
+---
+code: |
+  table_name = 'Court'
+  api_response = Airtable(base_key, table_name, api_key)
+  Courtapi = api_response.get_all()
+---
+code: |
+  table_name = 'Protocols'
+  api_response = Airtable(base_key, table_name, api_key)
+  protocols = api_response.get_all()
+---
+code: |
+  table_name = 'Facts'
+  api_response = Airtable(base_key, table_name, api_key)
+  Factsapi = api_response.get_all()
+---
+code: |
+  table_name = 'TypeOfHousing'
+  api_response = Airtable(base_key, table_name, api_key)
+  TypeOfHousingapi = api_response.get_all()
+---
+code: |
+  table_name = 'OpposingParty'
+  api_response = Airtable(base_key, table_name, api_key)
+  OpposingPartyapi = api_response.get_all()
+---
+code: |
+  table_name = 'SpecialPopulations'
+  api_response = Airtable(base_key, table_name, api_key)
+  SpecialPopulationsapi = api_response.get_all()
+---
+code: |
+  table_name = 'Stage'
+  api_response = Airtable(base_key, table_name, api_key)
+  Stageapi = api_response.get_all()
+---
+question: |
+  Counties
+fields: 
+  - "Select the relevant Counties": relevantCounties
+    datatype: combobox
+    code: Countieslist
+---
+question: |
+  City
+fields: 
+  - "Select the relevant OpposingParty": relevantCity
+    datatype: combobox
+    code: Citylist
+---
+question: |
+  Court
+fields: 
+  - "Select the relevant Court": relevantCourt
+    datatype: combobox
+    code: Courtlist
+---
+question: |
+  Facts
+fields: 
+  - "Select the relevant Facts": relevantFactsdict
+    datatype: checkboxes
+    code: Factslist
+---
+question: |
+  OpposingParty
+fields: 
+  - "Select the relevant OpposingParty": relevantOpposingParty
+    datatype: combobox
+    code: OpposingPartylist
+---
+question: |
+  FactsDoNotRefer
+fields: 
+  - "Select the relevant OpposingParty": relevantFactsDoNotRefer
+    datatype: combobox
+    code: FactsDoNotReferlist
+---
+question: |
+  LegalIssue
+fields: 
+  - "Select the relevant LegalIssue": relevantLegalIssuedict
+    datatype: checkboxes
+    code: LegalIssuelist
+---
+question: |
+  TypeOfHousing
+fields: 
+  - "Select the relevant TypeOfHousing": relevantTypeOfHousing
+    datatype: combobox
+    code: TypeOfHousinglist
+---
+question: |
+  ZipCode
+fields: 
+  - "Select the relevant OpposingParty": relevantZipCode
+    datatype: combobox
+    code: ZipCodelist
+---
+question: |
+  SpecialPopulations
+fields: 
+  - "Select the relevant SpecialPopulations": relevantSpecialPopulationsdict
+    datatype: checkboxes
+    code: SpecialPopulationslist
+---
+question: |
+  Stage
+fields: 
+  - "Select the relevant Stage": relevantStage
+    datatype: combobox
+    code: Stagelist
+---
+code: |
+  for something in Factsapi:
+    if relevantFactsdict[something['id']]:
+      relevantFacts.append(something['id'])
+  relevantFacts.gathered = True
+---
+code: |
+  for something in LegalIssueapi:
+    if relevantLegalIssuedict[something['id']]:
+      relevantLegalIssue.append(something['id'])
+  relevantLegalIssue.gathered = True
+---
+mandatory: True
+code: |
+	for protocol in protocols:
+		if not 'Counties' in protocol['fields'] or relevantCounties in protocol['fields']['Counties']:
+			if not 'OpposingParty' in protocol['fields'] or relevantOpposingParty in protocol['fields']['OpposingParty']:
+				if not 'TypeOfHousing' in protocol['fields'] or relevantTypeOfHousing in protocol['fields']['TypeOfHousing']:
+					if not 'Stage' in protocol['fields'] or relevantStage in protocol['fields']['Stage']:
+						if not 'FactsDoNotRefer' in protocol['fields'] or relevantFactsDoNotRefer in protocol['fields']['FactsDoNotRefer']:
+							if not 'City' in protocol['fields'] or relevantCity in protocol['fields']['City']:
+								if not 'ZipCode' in protocol['fields'] or relevantZipCode in protocol['fields']['ZipCode']:
+									if not 'Court' in protocol['fields'] or relevantCourt in protocol['fields']['Court']:
+										if 'SpecialPopulations' in protocol['fields']:
+											for j in relevantSpecialPopulations:
+												if j in protocol['fields']['SpecialPopulations']:
+													if 'Facts' in protocol['fields']:
+														for j in relevantFacts:
+															if j in protocol['fields']['Facts']:
+																if 'LegalIssue' in protocol['fields']:
+																	for j in relevantLegalIssue:
+																		if j in protocol['fields']['LegalIssue']:
+																			referrallist.add(protocol['fields']['Name'])
+																else:
+																	referrallist.add(protocol['fields']['Name'])
+													else:
+														if 'LegalIssue' in protocol['fields']:
+															for j in relevantLegalIssue:
+																if j in protocol['fields']['LegalIssue']:
+																	referrallist.add(protocol['fields']['Name'])
+														else:
+															referrallist.add(protocol['fields']['Name'])
+										else:
+											if 'Facts' in protocol['fields']:
+												for j in relevantFacts:
+													if j in protocol['fields']['Facts']:
+														if 'LegalIssue' in protocol['fields']:
+															for j in relevantLegalIssue:
+																if j in protocol['fields']['LegalIssue']:
+																	referrallist.add(protocol['fields']['Name'])
+														else:
+															referrallist.add(protocol['fields']['Name'])
+											else:
+												if 'LegalIssue' in protocol['fields']:
+													for j in relevantLegalIssue:
+														if j in protocol['fields']['LegalIssue']:
+															referrallist.add(protocol['fields']['Name'])
+												else:
+													referrallist.add(protocol['fields']['Name'])
+---
+mandatory: true
+question: Available referrals
+subquestion: |
+  ${ referrallist }
+---
