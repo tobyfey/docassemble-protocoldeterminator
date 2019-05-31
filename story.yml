@@ -1,0 +1,107 @@
+---
+field: adventurechoice
+question: Adventure
+subquestion: |
+  Do you want to go on an adventure or go to the library?
+buttons:
+  - Adventure
+  - Library
+---
+question: Trust
+subquestion: |
+  ${ trusttext }
+  
+  How are you going to go?
+field: trustchoice
+buttons:
+  - Bike
+  - Car
+---
+code: |
+  if adventurechoice == "Adventure":
+    trusttext = "Adventuring is fun, but far.  The distress signal is from across town."
+  else:
+    trusttext = "Nothing better than a day at the library, but the branch down the street isn't open now.  You'll have to go downtown."
+---
+need:
+  - firstchoicetext
+question: First Choice
+subquestion: |
+  ${ firstchoicetext }
+field: firstchoice
+buttons:
+  code: firstchoicelist
+---
+need:
+  - trustchoice
+code: |
+  firstchoicelist = list()
+  if trustchoice == "Bike":
+    firstchoicetextpartone = "You pedal up to the "
+  else:
+    firstchoicetextpartone = "After looking for parking for an hour and a half, you finally make it to the "
+  if adventurechoice == "Adventure":
+    firstchoicetextparttwo = "lair of the wicked, jewel-encrusted dragon L. Suhveeay, where he sits atop his pile of treasure, the laws of man.  Under your feet crunch the bones of those who printed a case and distributed it to a roomful of people.  Do you cross the bridge of the moat, or try the back door?"
+    firstchoicelist = [{'bridge':"Bridge"},{'backdoor':"Back door"}]
+  else:
+    firstchoicetextparttwo = "library.  Do you want to use the 3d printer or check the hold section to see if your book arrived?"
+    firstchoicelist = [{'printer':"3D Printer"},{'book':"Check the holds"}]
+  firstchoicetext = firstchoicetextpartone + firstchoicetextparttwo
+---
+need:
+  - secondchoicetext
+question: Second Choice
+subquestion: |
+  ${ secondchoicetext }
+field: secondchoice
+buttons:
+  code: secondchoicelist
+---
+need:
+  - firstchoice
+code: |
+  secondchoicelist = list()
+  if firstchoice == "bridge":
+    secondchoicetext = "You storm the bridge, after paying the toll.  You are face-to-snout with L. Suhveeay, and you smell the fetid breath of copyright.  Do you attack him with your sword or raise your shield of mirror?"
+    secondchoicelist = [{'sword':"Sword"},{'shield':"Shield of Mirrors"}]
+  elif firstchoice == "backdoor":
+    secondchoicetext = "The back door is locked!  Your plans are foiled.  But then you realize you have to jiggle the knob to get it open.  You stealthily sneak around the evil dragon until you are face-to-snout with L. Suhveeay, and you smell the fetid breath of copyright.  Do you attack him with your sword or raise your shield of mirror?"
+    secondchoicelist = [{'sword':"Sword"},{'shield':"Shield of Mirrors"}]
+  elif firstchoice == "printer":
+    secondchoicetext = "Nobody is using the 3d printer and you have some extra filament.  Do you want to make a sword or a keychain decal?"
+    secondchoicelist = [{'sword':"Sword"},{'decal':"Keychain decal"}]
+  else:
+    secondchoicetext = "Your books haven't been arrived, which you sorta expected since you ordered them on the way to the library.  But you see another patron named Smith has a reserved H.L.A. Hart book on the shelf, and as luck would have it, Smith walks up and grabs the book.  You introduce yourself.  Do you invite Smith to get a beer or a coffee?"
+    secondchoicelist = [{'beer':"Beer"},{'coffee':"coffee"}]
+---
+need:
+  - secondchoice
+code: |
+  if adventurechoice == "Library" and secondchoice == "sword":
+    endtextpart1 = "After you print your sword, you notice the evil dragon L. Suhveeay has been here recently, stealing knowledge from the public domain.  Enough is enough.  You march to the dragon's lair.  "
+  else:
+    endtextpart1 = ""
+  if secondchoice == "sword":
+    endtextpart2 = "You raise your sword and strike the evil dragon down.  Blackstone is avenged - law is open and free!"
+  elif secondchoice == "shield":
+    endtextpart2 = "The shield of mirrors makes the dragon L. Suhveeay see how craven and wicked he is, so he decides to run for president.  "
+  elif secondchoice == "decal":
+    endtextpart2 = "You make a really cool keychain decal.  "
+  elif secondchoice == "beer":
+    endtextpart2 = "Smith heartily agrees, but the Hart-Dworkin debate can get nasty with alcohol involved.  But you end up hugging it out.  "
+  elif secondchoice == "coffee":
+    endtextpart2 = "You have a fascinating conversation over coffee and decide to interview each other for Ipse Dixit.  "
+  if trustchoice == "Bike":
+    endtextpart3 = "Then you bike home, thinking about how much you enjoy riding your bike."
+  else:
+    endtextpart3 = "Then you drive home and get in a car crash.  You have to go to the emergency room, like an American does every eight seconds because people choose to drive."
+  endtext = endtextpart1 + endtextpart2 + endtextpart3
+---
+mandatory: True
+question: The end
+subquestion: |
+  ${ endtext }
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
