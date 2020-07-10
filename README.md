@@ -133,7 +133,7 @@ This section is not directly connected to Airtable, but the Pika variables colle
     
 </details>
 
-## Selecting Specific Issues
+## Selecting Specific Issues and Clones
 
 The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
@@ -185,7 +185,7 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
 </details>
 
 
-## Selecting Specific Issues
+## Finding Legal Defenses
 
 The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
@@ -237,7 +237,7 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
 </details>
 
 
-## Selecting Specific Issues
+## Matching Protocols
 
 The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
