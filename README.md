@@ -133,7 +133,7 @@ This section is not directly connected to Airtable, but the Pika variables colle
     
 </details>
 
-## Gathering Data from Pika and Elsewhere
+## Selecting Specific Issues
 
 The first step for the Protocol Determinator is to gather available information from Pika to use in the embedded docassemble interview.
 
