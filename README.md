@@ -288,3 +288,59 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
     
 </details>
 
+
+
+## Creating Information Sheets
+
+The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
+
+### Next Steps and Options
+
+
+
+<details>
+	<summary>Software issues</summary>
+	
+###### Software issues
+	1. Get data from related parties to the case
+	   * link to issues
+	2. Add in explanation about 1 and 0 as True and False
+	   * link to issues
+</details>
+
+<details>
+	<summary>Features Requests</summary>
+	
+###### Features Requests
+	1. Pull in data from other sources
+	   2. Court dockets
+	   3. Property lists
+	   
+</details>
+
+<details>
+	<summary>How it works in docassemble</summary>
+	
+<br>	
+The interview needs to complete apps.issues, a list of
+
+The first issue - the "Top" issue - is added automatically.  This is the issue object for all types of legal objects, with subsets like "Housing", "Family".  We can add the 'Top' issue by using the issue2aid dictionary in the LegalObjectsLibrary_dictionary.yml.
+
+	---
+	code: |
+	  app.issues.there_are_any = True
+	---
+	code: |
+	  app.issues[0].a_id = issues2aid['Top']
+	---
+
+</details>
+
+<details>
+	<summary>Connected Airtable databases</summary>
+	
+<br>	
+Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().	
+    
+    
+</details>
