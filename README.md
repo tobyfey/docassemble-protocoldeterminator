@@ -1,4 +1,4 @@
-# A collapsible section containing markdown
+# Gathering Data from Pika and Elsewhere
 <details>
 	<summary>Click to expand!</summary>
 	
