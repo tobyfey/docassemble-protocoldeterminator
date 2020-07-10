@@ -135,7 +135,7 @@ This section is not directly connected to Airtable, but the Pika variables colle
 
 ## Selecting Specific Issues
 
-The first step for the Protocol Determinator is to gather available information from Pika to use in the embedded docassemble interview.
+The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
 <details>
 	<summary>Software issues</summary>
