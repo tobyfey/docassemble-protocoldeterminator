@@ -294,6 +294,7 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
 
 The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
+### Gathering
 ### Next Steps and Options
 
 
@@ -312,9 +313,7 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Pull in data from other sources
-	   2. Court dockets
-	   3. Property lists
+	1. Send notification to advocate when there is an issue that isn't completed
 	   
 </details>
 
