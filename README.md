@@ -262,7 +262,7 @@ A protocol can be created by selecting counties, issue objects and legal objects
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Opposing_Parties are asked even if there is no matching zip code.
+1. Opposing_Parties are asked even if there is no matching zip code.
 	
 </details>
 
@@ -270,9 +270,9 @@ A protocol can be created by selecting counties, issue objects and legal objects
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Make a docassemble interview to input protocols
-	2. Automatically make referral letter if protocol determined
-	3. Make no-code system to create formula in docassemble interview
+1. Make a docassemble interview to input protocols
+2. Automatically make referral letter if protocol determined
+1. Make no-code system to create formula in docassemble interview
 	   
 </details>
 
