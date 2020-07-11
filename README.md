@@ -311,11 +311,21 @@ Protocols are in the LegalObjectLibrary base in the protocols tab. [Here is a vi
 
 The specific legal issue leads you to the specific legal information that is most helpful.
 
+The infosheet is organized into 3 parts to give the user the "news they can use":
+
+1. Explanations
+1. Next Steps
+1. Options
+
+
+
 The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information about the .  The advocate can organize this information that is most understandable, 
 
 ### Gathering
+
 ### Next Steps and Options
 
+Next steps and options are collected from the layers of issues and legal objects.  For example, an option in all eviction cases would be Request a Continuance, but File Counterclaims may only be relevant for certain elements of an eviction case.
 
 
 <details>
