@@ -198,9 +198,13 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
 
 ## Finding Legal Defenses
 
-If an
+If an IssueObject involves or could involve some legal procedure like a court case, the protocol determinator will ask questions about the case using LegalObjects.
 
-Instead of subsets, LegalObjects have elements
+LegalObjects are similar to IssueObjects, but instead of having subsets to narrow down to a specific issue, LegalObjects have elements, like a court case has elements.  These are parts of a court case that must be proven to be successful in court.
+
+Organizing law into elements is natural to lawyers, and also translates well to organiing information into objects for docassemble.  The protocol determinator can go down the relevant paths of the elements to find any potential defenses.
+
+The necessary key to succes creating progammatic law is to make an interface that looks like the law to lawyers, who are going to be creating the contaent.  Adding an element or defense is much simpler thean reconfiguring a low chart or branching logic tree.
 
 <details>
 	<summary>Software issues</summary>
