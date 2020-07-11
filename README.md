@@ -198,7 +198,9 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
 
 ## Finding Legal Defenses
 
-The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
+If an
+
+Instead of subsets, LegalObjects have elements
 
 <details>
 	<summary>Software issues</summary>
@@ -224,16 +226,16 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>How it works in docassemble</summary>
 	
 <br>	
-The interview needs to complete apps.issues, a list of
+The app.legal_objects DAList is first populated by any Legal Objects associated with an IssueObject that was selected.
 
-The first issue - the "Top" issue - is added automatically.  This is the issue object for all types of legal objects, with subsets like "Housing", "Family".  We can add the 'Top' issue by using the issue2aid dictionary in the LegalObjectsLibrary_dictionary.yml.
-
-	---
 	code: |
-	  app.issues.there_are_any = True
-	---
-	code: |
-	  app.issues[0].a_id = issues2aid['Top']
+	  for issue in app.issues:
+		if hasattr(issue,'legalObjects'):
+		  for legOb in issue.legalObjects:
+		    app.legal_objects.append(legob_from_a_id(legOb))
+	  app.legal_objects.gathered = True
+	comment: |
+	  Adds LegalObjects to issues
 	---
 
 </details>
@@ -242,7 +244,9 @@ The first issue - the "Top" issue - is added automatically.  This is the issue o
 	<summary>Connected Airtable databases</summary>
 	
 <br>	
-Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().	
+Issue Objects have a field legalObjects, which is a list of Airtable ids of rows in the legalobjects tab.
+
+Legal Objects are in the LegalObjectLibrary base in the legalobjects tab. [Here is a viewy]().	
     
     
 </details>
@@ -266,9 +270,7 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Pull in data from other sources
-	   2. Court dockets
-	   3. Property lists
+	1. Notification to advocate about "new" issue or clone.
 	   
 </details>
 
@@ -276,9 +278,7 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>How it works in docassemble</summary>
 	
 <br>	
-The interview needs to complete apps.issues, a list of
-
-The first issue - the "Top" issue - is added automatically.  This is the issue object for all types of legal objects, with subsets like "Housing", "Family".  We can add the 'Top' issue by using the issue2aid dictionary in the LegalObjectsLibrary_dictionary.yml.
+Infosheets are made
 
 	---
 	code: |
@@ -303,7 +303,9 @@ Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a v
 
 ## Creating Information Sheets
 
-The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
+The specific legal issue leads you to the specific legal information that is most helpful.
+
+The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information about the .  The advocate can organize this information that is most understandable, 
 
 ### Gathering
 ### Next Steps and Options
