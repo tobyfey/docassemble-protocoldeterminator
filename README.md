@@ -242,6 +242,200 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 	  Adds LegalObjects to issues
 	---
 
+	---
+	generic object: LegalObject
+	sets: x.legal_elements
+	code: |
+	  x.initializeAttribute('legal_elements',LegalObjectList.using(object_type=LegalObject, auto_gather = False))
+	  for atid in x.elementslist:
+		tempobject = legob_from_a_id(atid)
+		if tempobject.active:
+		  x.legal_elements.append(tempobject,set_instance_name=True)
+	  x.legal_elements.gathered = True
+	comment: |
+	  Adds LegalObjects to LegalObjects.  This is where I need to add something to screen out some LegalObjects.  LegalObjects can have a condition and only be added if that condition is true.  So for Corporate Plaintiff would have as a factObject whether the Plaintiff was a fictitious name.  Each of the elements of Corporate Plaintiff should only be added as a legal element if the Plaintiff is a fictitious name.  The Grounds legalObject has a factObject what the stated grounds in the complaint.  Each of the elements can have a condition that only adds the elements for their case - the Nonpayment LegalObject will have a condition [grounds_in_the_complaint="Nonpayment"]
+	  So do I need an exec command here
+	---
+	code: |
+	  if not defined('used_defenses'):
+		used_defenses = list()
+	---
+	generic object: LegalObject
+	code: |
+	  if x.more_clones == "No_More_Clones":
+		if not hasattr(x, 'factslist'):
+		  if x.legal_elements.ismet:
+		    x.ismet = True
+		  else:
+		    x.ismet = False
+		else:
+		  if x.facts_elements_interaction == "factsANDelements":
+		    if not x.facts.ismet:
+		      x.ismet = x.facts.ismet
+		    else:
+		      if x.legal_elements.ismet:
+		        x.ismet = True
+		      else:
+		        x.ismet = False
+		  elif x.facts_elements_interaction == "factsORelements":
+		    if x.facts.ismet:
+		      x.ismet = True
+		    else:
+		      if x.legal_elements.ismet:
+		        x.ismet = True
+		      else:
+		        x.ismet = False
+		  else:
+		    x.ismet = x.facts.ismet
+	  else:
+		reconsider('x.more_clones')
+	  if defined('x.defensename') and x.ismet is not None:
+		setattr(app.case,x.defensename,x.ismet)
+		used_defenses.append(x.defensename)
+	comment: |
+	  The interview determines whether LegalObjects are "met", meaning that the LegalObject is True if it helps the Plaintiff win the type of case associated with the top-level LegalObject.
+	  First, it is checked whether there are any clones of the LegalObject.  A clone is the same legal issue with different rules because of a different jurisdiction or type of housing.
+	  Next, it checks whether "facts", which is a list of FactObjects, is "met".  It checks this by prompting a FactObject question, and then using the response in a formula, as described in that block.
+	  Facts are checked first for two reasons.  First, if a LegalObject has both FactObjects and other LegalObjects as elements, it means that each of the element LegalObjects require that FactObject to be a certain answer.  For example, the Corporate Plaintiff has a FactObject about whether the Plaintiff is a corporation.  If the Plaintiff is not a corporation, then the "facts" is met, and the LegalObjects shouldn't be checked.  Right now, it doesn't work this way - if the facts.ismet = False, then the legalObject is false, and it won't need to ask the other questions.  (What about the situation where a fact object might be cuz of a defense (defense that there is no notice) but if there is notice, then these other defenses should be checked.
+	  Second, LegalObjects that are elements of a LegalObject with a FactObject may be conditioned on how that FactObject question is answered.  For example, Grounds has a FactObject of grounds_listed_in_complaint.  After asking what grounds are listed in the complaint, the LegalObjects are only relevant if the grounds listed.  So if the grounds is "Nonpayment", only the Nonpayment LegalObject will be relevant, and the Rule Violations are nto relevant (meaning they can be marked .ismet - .ismet includes not being relevant.)
+	  So I have to make it so that if in Corporate Plaintiff, is_fictitious_name = False evaluates to True, and the legal objects are not needed and the legal object is not added to defense.  If is_fictitious_name = True, the fact formula evaluates to False and the legal objects are not needed.
+	  In the case of Grounds, the fact_formula should always evaluate to False, so the legalObjects are always evaluated
+	  In a "final" LegalObject, where there are no elements, then if there is a defense, facts.ismet should be False, and then the legalobject would be False.
+	---
+	generic object: LegalObjectList
+	code: |
+	  counter = 0
+	  for legalobject in x:
+		if legalobject.ismet or legalobject.ismet is None:
+		  counter += 1
+	  if counter == len(x):
+		x.ismet = True
+	  else:
+		x.ismet = False
+	comment: |
+	  This section determines if an legal object is "met" by seeing if each of the legal objects in the elements fields are met.  
+	---
+	generic object: LegalObject
+	sets: 
+	  - x.facts
+	code: |
+	  if hasattr(x,'factslist'):
+		x.facts.there_are_any = True
+		for fid in x.factslist:
+		  x.facts.append(fact_from_a_id(fid),set_instance_name=True)
+		  if hasattr(x,'explanationifnotmet'):
+		    x.facts.explanationifnotmet = x.explanationifnotmet
+		x.facts.there_is_another = False
+	  else:
+		x.facts.there_are_any = False
+	comment: |
+	  This section adds fact objects to a legal object from the AirTable.  I think I need to add in something to screen for active fact objects.
+	---
+	generic object: FactObjectList
+	code: |
+	  x.factsgathered
+	  exec(x.fact_formula)
+	  x.ismet = facts_are_met()
+	comment: |
+	  The formula in the AirTable is called, which looks for the definition of the variables in the formula.  Is it even necessary to have the facts as children.  A sample fact_formula looks like this
+	  def facts_are_met():
+		if notice_exists and notice_attached_to_complaint:
+		  return True
+		else:
+		  return False
+	  So are the variables in the fact_formula set, in this case "notice_exists" and "notice_attached_to_complaint".  If that is the case, then I can put things like that in the fact_formula and still just evaluate to True/False.  But what does True or False mean for something like Corporate_Plaintiff?  The LegalObject should be True if the Plaintiff is either not a corporation or if all the legal objects are met.  So the fact_formula should evaluate to True if the Plaintiff is not a corporation, and to False if
+	---
+	generic object: FactObjectList
+	sets: x[0]
+	question:  ${ x.label }
+	subquestion: |
+	  ${ x.explanation }
+	  
+	  ${ x.question }
+
+	  % if hasattr(x,'html'):
+	  ${ x.html }
+	  % endif
+
+	  
+	fields:
+	  code: x.questioncode()
+	continue button field: x.factsgathered
+	comment: |
+	  The question for facts - the explanation are set by tables in the AirTable 
+
+	---
+	generic object: FactObjectList
+	code: |
+	  if defined('finish_questions'):
+		x.factsgathered = True
+	---
+	code: |
+	  app.match_dict.new(protocols.keys())
+	  for protokey in protocols.keys():
+		app.match_dict[protokey].qualify_sentence = protocols[protokey].qualify_sentence
+		for sfkey in protocols[protokey].keys():
+		  if not set(protocols[protokey][sfkey]).isdisjoint(set(app.specific_factors[sfkey])):
+		    app.match_dict[protokey][sfkey] = True
+		  else:
+		    app.match_dict[protokey][sfkey] = False
+		    app.match_dict[protokey].gathered = True
+		    break
+		app.match_dict[protokey].gathered = True
+	  app.match_dict.gathered = True
+	comment: |
+	  This section determines if each requirement in the protocol is satisfied by seeing if there is any overlap between the protocol's set of airtable ids in protocols['HCED1a']['County'] with the set of AirTable ids from the same table in specific_factors['County'].  If there is an overlap (or not disjoint), then it will set match_dict['HCED1a']['County'] to True.  A block below with then see if the all of the factors in match_dict['HCED1a'] are true.
+	---
+	generic object: Protocol
+	code: |
+	  exec(x.qualify_sentence)
+	  x.qualify = qualify()
+	comment: |
+	  This section runs the qualify_sentence from the Protocols table, which will look something like this:
+	  
+	  def qualify():
+		if date_of_hearing > date_intake_completed.plus(days=3):
+		  if domestic_violence or sexual_assault or stalking:
+		    return 1
+		  elif disability_household_member:
+		    return 1
+		  else:
+		    return 0
+		else:
+		  return 0
+		
+	  The formula statement uses FactObject variable names and causes the interview to ask questions to define those variables.  Why does this one use "Good" or "Bad"?  That's obviously a mistake.  The next block tests to see if it is equal to 1.  So this protocol will never "qualify".
+	---
+	generic object: LegalObject
+	code: |
+	  if hasattr(x,'clones') and len(x.clones) > 0:
+		x.clone_from_a_id(x.clone_legob, x.clone_name)
+		if hasattr(x,'clones') and len(x.clones) > 0:
+		  x.more_clones = "May_Be_More_Clones"
+		else:
+		  x.more_clones = "No_More_Clones"
+	  else:
+		x.more_clones = "No_More_Clones"
+	comment: |
+	  Checks to see if there are clones.  If there are, a LegalObject method is used to update the current LegalObject, by replacing any of the information fields when that information field is not blank in the clone object.
+	  Because the object is updated, it can check clones again.  The clones field will always change, because the clone will not appear in the clones field.  So it checks to see if there are clones.  x.more_clones is called in the .ismet evaluation block, and if x.more_clones is not equal to "No_More_Clones", then x.more_clones gets reconsidered, forcing it to come back to this block.
+
+	---
+	generic object: LegalObject
+	sets: x.clone_legob
+	code: |
+	  for key, value in x.clones.iteritems():
+		x.clone_name = key
+		clone_temp_list = list()
+		for clone_lo_id in value:
+		  clone_type_id = get_clone_type(clone_lo_id,key)
+		  if clone_type_id in app.specific_factors[key]:
+		    x.clone_legob = clone_lo_id
+	comment: |
+	  This sets a variable need for clone_from_a_id.  x.clone_legob is the Airtable id for the clone legal object.  The clones attribute of legal object is a set of Airtable ids of clones, which are also in the legal objects table.  However, to pick which clone is appropriate, the user will pick the name of the clone.  The clone legal object will be something like "Notice Public Housing", but the user should pick from a list with labels like "Public Housing".  In addition, the user may have already set "Public Housing" as a specific factor, but that will be set as a specific factor, and not as the name of that clone.  So this table checks each of the 
+	  This just picks the last clone in x.clones.
+
+	---
 </details>
 
 <details>
