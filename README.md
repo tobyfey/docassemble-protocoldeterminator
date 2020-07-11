@@ -254,23 +254,25 @@ Legal Objects are in the LegalObjectLibrary base in the legalobjects tab. [Here 
 
 ## Matching Protocols
 
-The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
+After figuring out the IssueObject and the LegalObject, the Protocol determinator can sometimes determine if a protocol is met and a client can be referred.  Or more questions may need tob e asked.  The protocol determinator will ask needed questions and then determine the protocol.
+
+A protocol can be created by selecting counties, issue objects and legal objects form a list.  If a protocol only applies to certain populations those questions are added as FactObjects, also used by LegalObjects.  These FactObjects are used in a formula in the Airtable to see if a protocol is met.  Using this method balances the ease of creating protocols with the flexibility needed to allow for different kinds of protocols.
 
 <details>
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Get data from related parties to the case
-	   * link to issues
-	2. Add in explanation about 1 and 0 as True and False
-	   * link to issues
+	1. Opposing_Parties are asked even if there is no matching zip code.
+	
 </details>
 
 <details>
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Notification to advocate about "new" issue or clone.
+	1. Make a docassemble interview to input protocols
+	2. Automatically make referral letter if protocol determined
+	3. Make no-code system to create formula in docassemble interview
 	   
 </details>
 
@@ -278,7 +280,7 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>How it works in docassemble</summary>
 	
 <br>	
-Infosheets are made
+Protocols are inputted at the beginning
 
 	---
 	code: |
@@ -294,7 +296,7 @@ Infosheets are made
 	<summary>Connected Airtable databases</summary>
 	
 <br>	
-Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().	
+Protocols are in the LegalObjectLibrary base in the protocols tab. [Here is a viewy]().	
     
     
 </details>
