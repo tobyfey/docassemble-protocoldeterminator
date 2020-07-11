@@ -482,11 +482,83 @@ Protocols are inputted at the beginning
 
 	---
 	code: |
-	  app.issues.there_are_any = True
+	  protocols = protocols_from_airtable()
+	comment: |
+	  Creates the protocol from a function.
 	---
 	code: |
-	  app.issues[0].a_id = issues2aid['Top']
+	  list_of_clones = ['TypeOfHousing','Jurisdiction','Stage']
+	  for issue in app.issues:
+		if hasattr(issue,'cloned'):
+		  for field_name in list_of_clones:
+		    if field_name in issue.cloned:
+		      app.specific_factors[field_name].add(issue.cloned[field_name])
+		      app.specific_factors[field_name].gathered = True
+		else:
+		  if defined('issue.a_id'):
+		    app.specific_factors['issues'].add(issue.a_id)
+		  else:
+		    app.specific_factors['issues'].add(issue.name)
+		  app.specific_factors['issues'].gathered = True
+	  if len(app.legal_objects) > 0:
+		for legob in app.legal_objects:
+		  temp_set2 = legob.nested_add()
+		  for ts in temp_set2:
+		    app.specific_factors['legalObjects'].add(ts)
+		    app.specific_factors['legalObjects'].gathered = True
+	  app.specific_factors.gathered = True
+	comment: |
+	  For LegalIssues, picking a "clone" means adding a new LegalIssue to the list of legalIssues, app.issues.  This issue will be a duplicate of the first one, with fields changed as needed due to the specific factor (i.e. changing advice and elements for notice defenses in public housing).  Two fields will always be different between the original legalIssue and the clone legalIssue - the name of the clone will be removed from the x.clones attribute, and the name of the type of clone will be added to x.cloned.  So if the original legalIssue's x.clones was ['TypeOfHousing','County'], then the TypeOfHousing clone's x.clones sould be ['County'].  In addition, the clone's attribute x.cloned, which is a dictionary, has a new key:value added - the key is the name of the specific factor and the value is a set of the AirTable ids for the user's input for those factors.  For example, x.cloned['TypeOfHousing'] would be a set including the AirTable id for Public Housing.  
+	  This is a set because there should be levels in these categories.  There needs to be a way to pick "Subsidized Housing", "Multifamily", and "221(d)(3)".  I haven't made the question to pick multiple levels in specific factors yet.  
+	  So the first section makes sure any of the factors recorded in the x.cloned attribute is transferred to the app.specific_factors dictionary, to prevent questions from being repeated.
+	  The second section adds legalObjects to app.specific_factors.  Because app.legal_objects is not a set of AirTable ids or IssueObjects, a function is needed to recursively go through the legalObjects and add them to the list if ".ismet" is not True.  In addition, if ".ismet" is not True, then the same function will run on any elements that legal issue has.  I think this is done after all the legalObjects are gathered, so I don't think it matters that this ignores FactObjects.
 	---
+	generic object: Protocol
+	code: |
+	  if x.all_true() and x.qualify == 1:
+		x.match = True
+	  else:
+		x.match = False 
+	comment: |
+	  This is used in .match_dict, which is like a copy of protocols, except .match_dict['HCED1a']['County'] equals either true or false, while protocols['HCED1a']['County']  would be a set of AirTable ids for records in County.  This block sets the attribute .match for the Protocol (which is .match_dict['HCED1a'] to be either true or false.  Despite protocols also using Protocol, there won't be any reason why protocol['HCED1a'].match will ever be sought.
+	  Tests to see if all of the factors of a Protocol are met.  .protocols is a dictionary with keys set as the names of specific protocols, like HCED2.  The values of the dictionary are sets of factors.
+	  .all_true() is a function from .legal, I believe.
+	---
+	generic object: SFDict
+	code: |
+	  x[i].sfql = get_sfql(i)
+	  x[i].there_are_any = True
+	comment: |
+	  Uses a function to create .sfql or Specific Factors Question List.  This creates the list of dictionaries, with the key being an AirTable id for an item in the table with the name of the factor, and the value being the name of that item from the table.  get_sfql (which takes a key from the specific_factors dictionary, which is a name of a table like County or issues) also can add help: and default:, using values from the factor table.
+	  I think I need to create ways to narrow down the specific factors that could be pulled up.  I think I will have to do that in the .py file.
+	---
+	generic object: SFDict
+	code: |
+	  if defined('case') and defined('case.housing_type'):
+		x['TypeOfHousing'].new_item = TypeOfHousing2aid[case.housing_type]
+	---
+	generic object: SFDict
+	code: |
+	  if defined('countyAC'):
+		x['County'].new_item = County2aid[countyAC]
+	---
+	generic object: SFDict
+	question: ${ i }
+	fields: 
+	  - no label: x[i].new_item
+		datatype: combobox
+		code: x[i].sfql
+	comment: |
+	  This question asks the user to pick from choices of a specific factor, for example, the question "TypeOfHousing" will ask the user to pick from "Private", "Public"
+	  .specific_factors is a dictionary of sets.  Each key of the dictionary is the name of a factor needed to determine if a protocol is appropriate, like "County" or "issues".  The value is a set containing AirTable ids for records in a table with the same name as the issue, so the table in the AirTable named County or issues for the earlier examples.  The .sfql
+	---
+	generic object: SFDict
+	code: |
+	  x[i].there_is_another = False
+	comment: |
+	  WHAT DOES THIS DO?? Why isn't this 
+	---
+
 
 </details>
 
