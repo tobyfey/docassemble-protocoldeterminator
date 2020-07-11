@@ -1,6 +1,16 @@
+The Protocol Determinator makes it easier for advocates to use data to determine a person's legal needs, and refer to available protocols or otherwise provide specific legal information.
+
+Civil common law as best, most elegant solution.
+
+Our system is failing 
+
+Open types of organization, with open tools for as many people as possible to participate, can provide the open, uniform law.
+
+The Protocol Determinator demonstrates both how we can = provide the best assistance we can to people who need help now while building a better system in the future.
+
 ## Gathering Data from Pika and Elsewhere
 
-The first step for the Protocol Determinator is to gather available information from Pika to use in the embedded docassemble interview.
+The Protocol Determinator can be opened in Pika, and pull data from any of the tabs.  The data that is pulled from Pika can be double-checked.
 
 <details>
 	<summary>Software issues</summary>
@@ -19,6 +29,7 @@ The first step for the Protocol Determinator is to gather available information 
 	1. Pull in data from other sources
 	   2. Court dockets
 	   3. Property lists
+	1. Add tab for protocol determinator
 	   
 </details>
 
