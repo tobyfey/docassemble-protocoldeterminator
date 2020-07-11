@@ -183,6 +183,79 @@ The first issue - the "Top" issue - is added automatically.  This is the issue o
 	code: |
 	  app.issues[0].a_id = issues2aid['Top']
 	---
+	
+	---
+	code: |
+	  app.issues[i].a_id
+	  app.issues[i].no_more_preclones
+	  app.issues[i].question_code_needed
+	  app.issues[i].complete = True
+	---
+	code: |
+	  app.issues.there_are_any = True
+	---
+	code: |
+	  app.issues[0].a_id = issues2aid['Top']
+	---
+	question:
+	  - Pick:  app
+	---
+	question: ${ app.issues.complete_elements().last().title }
+	fields:
+	  - Pick any applicable subset: app.issues[i].a_id
+    code: app.issues.complete_elements().last().question_code
+	under:
+	comment: |
+	  This question sets the .a_id attribute for a new issue, which is the first attribute sought when adding a new IssueObject.  The question uses the .subsets attribute of the last IssueObject (a list of Airtable ids of IssueObjects)
+	  The question also lets the user choose "None" or "Other".  Choosing "Other" will require the user to name the other IssueObject.
+	  Users can also edit the current IssueObject,
+	---
+	code: |
+	  if app.issues[i].a_id == "None":
+    app.issues[i].question_code_needed = False
+    app.issues[i].no_more_preclones = True
+	  elif x.a_id == "Other":
+    app.issues[i].new_object_added
+	  else:
+    app.issues[i].get_issue_from_aid()
+	---
+	code: |
+	  app.issues[i].question_code = list()
+	  for issue_id in api.issues[i].subsets:
+    tempdict = dict()
+    tempdict[issue_id] = aid2issues[issue_id]
+    app.issues[i].question_code.append(tempdict)
+	  app.issues[i].question_code.append({"None":"None"})
+	  app.issues[i].question_code.append({"Other":"Other"})
+	---
+	---
+	question:
+	continue button field: x.new_object_added
+	---
+	code: |
+	  number_of_preclones = len(app.issues[i].preclones)
+	  if number_of_preclones == 0:
+    app.issues[i].no_more_preclones = True
+	  else:
+    app.issues[i].clone_from_aid(clone_aid+
+    reconsider('number_of_preclones')
+	---
+	question:
+	fields:
+	  - Attached, existing or new clone: app.issues[i].new_clone
+    
+	  - Attached clone: app.issues[i].clone_aid
+	  - Existing clone: app.issues[i].existing_clone
+	  - New clone:
+	comment: |
+	  
+	---
+	if: app.issues[i].existing_clone
+	code: |
+	  update_clone_list
+	  create_new_clone
+	  
+	  
 
 </details>
 
