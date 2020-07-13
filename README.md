@@ -5,7 +5,7 @@ Our civil legal system is presumed to provide justice and fairness because it is
 Improvements in communication technology and shared knowledge and libraries can make law more open and uniform, as well as providing the ability to measure and improve.  The Protocol Determinator demonstrates both how we can both provide the best assistance we can to people who need help now while building a better system in the future.
 
 This document walks through the steps of the Protocol Determinator, with a basic overview, and more detailed information available by clicking on the triangles.
-
+  SCREENSHOTS WILL BE ADDED WHEN THE SERVER IS BACK ONLINE.
 
 ## Gathering Data from Pika and Elsewhere
 
