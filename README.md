@@ -138,7 +138,9 @@ This section also contains a script to workaround our version of Pika's limitati
 	<summary>Connected Airtable databases</summary>
 	
 <br>	
-This section is not directly connected to Airtable, but the Pika variables collected here are listed in the [facts table of the Legal Objects Library](https://airtable.com/shromaQ1J1QXNO5n2).	
+This section is not directly connected to Airtable, but the Pika variables collected here are listed in the 
+
+[facts table of the Legal Objects Library](https://airtable.com/shromaQ1J1QXNO5n2) .	
     
     
 </details>
