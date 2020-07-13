@@ -15,20 +15,20 @@ The Protocol Determinator can be opened in Pika, and pull data from any of the t
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Get data from related parties to the case
-	   * link to issues
-	2. Add in explanation about 1 and 0 as True and False
-	   * link to issues
+1. Get data from related parties to the case
+   * link to issues
+2. Add in explanation about 1 and 0 as True and False
+   * link to issues
 </details>
 
 <details>
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Pull in data from other sources
-	   2. Court dockets
-	   3. Property lists
-	1. Add tab for protocol determinator
+1. Pull in data from other sources
+   2. Court dockets
+   3. Property lists
+1. Add tab for protocol determinator
 	   
 </details>
 
@@ -155,7 +155,7 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Get issue collection using complete_attributes working
+1. Get issue collection using complete_attributes working
 	
 </details>
 
@@ -163,8 +163,8 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Most common
-	2. Machine learning - guess issue using Suffolk API
+1. Most common
+2. Machine learning - guess issue using Suffolk API
 	   
 </details>
 
@@ -290,17 +290,14 @@ The necessary key to succes creating progammatic law is to make an interface tha
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Get data from related parties to the case
-	   * link to issues
-	2. Add in explanation about 1 and 0 as True and False
-	   * link to issues
+1. Subsidized housing problem - doesn't get .clone_legob
 </details>
 
 <details>
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Legal objects need to have the ability to include only certain elements depending on the answer to a question.  LegalObjects can have a condition and only be added if that condition is true.  So for Corporate Plaintiff would have as a factObject whether the Plaintiff was a fictitious name.  Each of the elements of Corporate Plaintiff should only be added as a legal element if the Plaintiff is a fictitious name.  The Grounds legalObject has a factObject what the stated grounds in the complaint.  Each of the elements can have a condition that only adds the elements for their case - the Nonpayment LegalObject will have a condition 
+1. Legal objects need to have the ability to include only certain elements depending on the answer to a question.  LegalObjects can have a condition and only be added if that condition is true.  So for Corporate Plaintiff would have as a factObject whether the Plaintiff was a fictitious name.  Each of the elements of Corporate Plaintiff should only be added as a legal element if the Plaintiff is a fictitious name.  The Grounds legalObject has a factObject what the stated grounds in the complaint.  Each of the elements can have a condition that only adds the elements for their case - the Nonpayment LegalObject will have a condition 
 	   
 </details>
 
@@ -747,7 +744,7 @@ If an "explanation block" has already been created for an issue, then an informa
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Circulate template/make editing of template easier
+1. Circulate template/make editing of template easier
 	
 </details>
 
@@ -755,9 +752,9 @@ If an "explanation block" has already been created for an issue, then an informa
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Send notification to advocate when there is an issue that isn't completed
-	2. Make editing box easier-to-use (WYSIWYG formatting...)
-	1. Add capability to create additional documents, like court pleadings
+1. Send notification to advocate when there is an issue that isn't completed
+2. Make editing box easier-to-use (WYSIWYG formatting...)
+1. Add capability to create additional documents, like court pleadings
 	   
 </details>
 
