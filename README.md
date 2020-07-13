@@ -290,7 +290,7 @@ The necessary key to succes creating progammatic law is to make an interface tha
 	<summary>Software issues</summary>
 	
 ###### Software issues
-1. Subsidized housing problem - doesn't get .clone_legob
+1. Subsidized and manufactured housing need fixed and tested
 </details>
 
 <details>
