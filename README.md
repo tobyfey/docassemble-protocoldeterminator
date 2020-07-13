@@ -16,9 +16,7 @@ The Protocol Determinator can be opened in Pika, and pull data from any of the t
 	
 ###### Software issues
 1. Get data from related parties to the case
-   * link to issues
 2. Add in explanation about 1 and 0 as True and False
-   * link to issues
 </details>
 
 <details>
