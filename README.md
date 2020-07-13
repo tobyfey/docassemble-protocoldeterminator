@@ -1,12 +1,11 @@
-The Protocol Determinator makes it easier for advocates to use data to determine a person's legal needs, and refer to available protocols or otherwise provide specific legal information.
+The Protocol Determinator makes it easier for advocates to use data to determine a person's legal needs, and refer to available protocols or otherwise provide specific legal information.  
 
-Civil common law as best, most elegant solution.
+Our civil legal system is presumed to provide justice and fairness because it is open and uniform and provides people their day in court - an opportunity to speak and be heard.  When our courts are not open or uniform, when our courts don't hear the people they impact, lives are shaken, both in the impact of the unfair decision, like a family forced into homelessness, and the loss of faith in the foundation of our society, caused by feeling like they were treated unfairly.
 
-Our system is failing 
+Improvements in communication technology and shared knowledge and libraries can make law more open and uniform, as well as providing the ability to measure and improve.  The Protocol Determinator demonstrates both how we can both provide the best assistance we can to people who need help now while building a better system in the future.
 
-Open types of organization, with open tools for as many people as possible to participate, can provide the open, uniform law.
+This document walks through the steps of the Protocol Determinator, with a basic overview, and more detailed information available by clicking on the triangles.
 
-The Protocol Determinator demonstrates both how we can = provide the best assistance we can to people who need help now while building a better system in the future.
 
 ## Gathering Data from Pika and Elsewhere
 
