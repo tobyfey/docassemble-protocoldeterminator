@@ -775,16 +775,220 @@ Next steps and options are collected from the layers of issues and legal objects
 	<summary>How it works in docassemble</summary>
 	
 <br>	
-The interview needs to complete apps.issues, a list of
+If an infosheet is chosen
 
-The first issue - the "Top" issue - is added automatically.  This is the issue object for all types of legal objects, with subsets like "Housing", "Family".  We can add the 'Top' issue by using the issue2aid dictionary in the LegalObjectsLibrary_dictionary.yml.
+	objects:
+	  - app.infosheet: DADict.using(object_type=DAObject, auto_gather=False,complete_attribute='complete')
+	  - app.infosheet[i].intro_issues: DAList.using(object_type=DAObject, auto_gather=False)
+	  - app.infosheet[i].options: DAList.using(object_type=DAObject, auto_gather=False)
+	  - app.infosheet[i].steps: DAList.using(object_type=DAObject, auto_gather=False)
+	---
+	
+This sets the information in in the infosheet to the most of use
+	
+	code: |
+	  app.infosheet['main'].title = app.issues.last().title
+	  app.infosheet['main'].explanation = app.issues.last().explanation
+	  app.infosheet['main'].subtitle = app.issues.last().subtitle
+	  app.infosheet['main'].why = app.issues.last().why
+	  app.infosheet['main'].warning = app.issues.last().warning
+	  app.infosheet['main'].how = app.issues.last().HOW
+	  app.infosheet['main'].requirement = app.issues.last().requirement
+	  app.infosheet['main'].Translation = app.issues.last().Translation
+	  app.infosheet['main'].law = app.issues.last().law
+	  
+Issues
+	 
+	---
+	code: |
+	  if not defined('collected_issues'):
+		collected_issues = list()
+	  for issue in app.issues:
+		if issue.a_id not in collected_issues:
+		  collected_issues.append(issue.a_id)
+		  app.infosheet['main'].intro_issues.append(issue)
+	  app.infosheet['main'].intro_issues.gathered = True
+	  if not defined('popped_already'):
+		app.infosheet['main'].intro_issues.pop()
+		popped_already = True
+	---
+	code: |
+	  app.infosheet['main'].option_dup_list = list()
+	---	
+
+Add options
+
+	code: |
+	  for issue in app.issues:
+		if defined('issue.options'):
+		  for option in issue.options:
+		    if not option.a_id in app.infosheet['main'].option_dup_list:
+		      app.infosheet['main'].options.append(option)
+		      app.infosheet['main'].option_dup_list.append(option.a_id)
+		      if defined('option.steps'):
+		        for step in option.steps:
+		          app.infosheet['main'].steps.append(step)
+	  app.infosheet['main'].options.gathered = True
+	---
+	
+Adds steps from issues
+	
+	code: |
+	  for issue in app.issues:
+		if defined('issue.steps'):
+		  for step in issue.steps:
+		    app.infosheet['main'].steps.append(step)
+	  app.infosheet['main'].steps.gathered = True
+
+Complete elements block
 
 	---
 	code: |
-	  app.issues.there_are_any = True
+	  app.infosheet['main'].intro_issues.gathered
+	  app.infosheet['main'].options.gathered
+	  app.infosheet['main'].steps.gathered
+	  app.infosheet[i].complete = True
+	  app.infosheet.gathered = True
+	  
+This page lets the advocate make the infosheet	 
+ 
 	---
-	code: |
-	  app.issues[0].a_id = issues2aid['Top']
+	question: Infosheet Editor
+	subquestion: |
+	  This page allows you to edit and create an Infosheet.  If any legal information already exists, it may be used as a default.
+	  Any legal information that you change or add can be saved to help future advocates.  You can save the legal information to the database on the page that download the infosheet.
+
+	fields:
+	  - Title: app.infosheet['main'].title
+		default: app.infosheet['main'].title
+		required: False  
+	  - Subtitle: app.infosheet['main'].subtitle
+		default: app.infosheet['main'].subtitle
+		required: False  
+	  - note: |
+	  		The "Explanation Block" is the top part of the letter, under the title and subtitle, that explains the legal issue.  You may want to use any of the following information, from the current issue and all parent issues, to write this block.
+	  		
+	  		The Explanation Block needs to be written in Markup.
+	  - Explanation Block: explanation_block
+		datatype: area
+	  - note: |
+			  Parent issues:
+			
+				% for inis in app.infosheet['main'].intro_issues:
+				${ inis.explanation }
+				
+				
+				% endfor
+				
+				${ app.infosheet['main'].explanation }
+				
+				% if hasattr(app.infosheet['main'],'definition'):
+				
+				Definition: ${ app.infosheet['main'].definition }
+				
+				% endif
+				% if hasattr(app.infosheet['main'],'why'):
+				
+				Why: ${ app.infosheet['main'].why }
+				
+				% endif
+				% if hasattr(app.infosheet['main'],'how'):
+				
+				How: ${ app.infosheet['main'].how }
+				
+				% endif
+				% if hasattr(app.infosheet['main'],'warning'):
+				
+				**Warning:** ${ app.infosheet['main'].warning }
+				
+				% endif
+				% if hasattr(app.infosheet['main'],'requirement'):
+				
+				Requirement: ${ app.infosheet['main'].requirement }
+				
+				% endif
+				% if hasattr(app.infosheet['main'],'Translation'):
+				
+				Translation: ${ app.infosheet['main'].Translation }
+				
+				% endif
+				% if hasattr(app.infosheet['main'],'law'):
+				
+				Law: ${ app.infosheet['main'].law }
+				
+				% endif
+		- note: |
+		  **Next Steps**
+		  
+				${ steps_table }
+		- note: |
+		  **Options**
+		  
+				${ options_table }
+		- Add or edit Next Steps: app.infosheet['main'].steps.edit
+		  datatype: yesno
+		- note: |
+				% if len(app.infosheet['main'].steps) > 0:
+				% for step in app.infosheet['main'].steps:
+				1. **${ step.title }**: ${ step.explanation }
+				
+				% endfor
+				% else:
+				Current no next steps.
+				% endif
+		- Add or edit Options: app.infosheet['main'].options.edit
+		  datatype: yesno
+		- note: |
+				% if len(app.infosheet['main'].options) > 0:
+				% for option in app.infosheet['main'].options:
+				1. **${ option.title }**: ${ option.explanation }
+				
+				% endfor
+				% else:
+				Current no next options.
+				% endif
+
+Attachment block
+
+	---
+	attachment:
+	  filename: Infosheet 
+	  variable name: infosheet
+	  docx template file: pw_template3.docx
+	  description: |
+		Specific legal information about your legal issue.   
+	
+Mandatory block to create infosheet.
+
+	---
+	mandatory: isTOF
+	question: ${ app.infosheet }
+	attachment code: |
+	  [infosheet]
+
+Tables are used to review "steps" and "next options"
+
+	---
+	table: steps_table
+	rows: app.infosheet['main'].steps
+	columns:
+	  - Title: row_item.title
+	  - Explanation: row_item.explanation
+	edit:
+		- title
+		- explanation
+	allow reordering: True
+	---
+	table: options_table
+	rows: app.infosheet['main'].options
+	columns:
+	  - Title: row_item.title
+	  - Explanation: row_item.explanation
+	edit:
+		- title
+		- explanation
+	allow reordering: True
+	---
 	---
 
 </details>
