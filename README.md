@@ -148,7 +148,7 @@ This section is not directly connected to Airtable, but the Pika variables colle
 
 ## Selecting Specific Issues and Clones
 
-The Protocol Determinator first tries to figure out the user's legal issue by starting at the top.  Each of these choices has it's own subsets
+First, we need to figure out the legal issue the user is facing.  The Protocol Determinator first tries to figure out the user's legal issue by starting at the top.  Each of these choices has it's own subsets
 
 The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
@@ -156,19 +156,16 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Get data from related parties to the case
-	   * link to issues
-	2. Add in explanation about 1 and 0 as True and False
-	   * link to issues
+	1. Get issue collection using complete_attributes working
+	
 </details>
 
 <details>
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Pull in data from other sources
-	   2. Court dockets
-	   3. Property lists
+	1. Most common
+	2. Machine learning - guess issue using Suffolk API
 	   
 </details>
 
@@ -734,7 +731,7 @@ Protocols are in the LegalObjectLibrary base in the protocols tab. [Here is a vi
 
 ## Creating Information Sheets
 
-The specific legal issue leads you to the specific legal information that is most helpful.
+After finding the user's specific legal info, the Protocol Determinator gathers the specific legal information that is most helpful from the issues and clones identified, including plain english explanations and next steps and options.
 
 The infosheet is organized into 3 parts to give the user the "news they can use":
 
@@ -742,25 +739,17 @@ The infosheet is organized into 3 parts to give the user the "news they can use"
 1. Next Steps
 1. Options
 
+The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information gathered.  The advocate can organize this information that is most understandable and create an "explanation block" for the first section.  An advocate can reorder, delete or add next steps and options.  The Protocol Determinator allows the user to save their changes to the library, so the library continues to grow and approve.
 
-
-The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information about the .  The advocate can organize this information that is most understandable, 
-
-### Gathering
-
-### Next Steps and Options
-
-Next steps and options are collected from the layers of issues and legal objects.  For example, an option in all eviction cases would be Request a Continuance, but File Counterclaims may only be relevant for certain elements of an eviction case.
+If an "explanation block" has already been created for an issue, then an information sheet can be simply reviewed and accepted, or edited if necessary.
 
 
 <details>
 	<summary>Software issues</summary>
 	
 ###### Software issues
-	1. Get data from related parties to the case
-	   * link to issues
-	2. Add in explanation about 1 and 0 as True and False
-	   * link to issues
+	1. Circulate template/make editing of template easier
+	
 </details>
 
 <details>
@@ -768,6 +757,8 @@ Next steps and options are collected from the layers of issues and legal objects
 	
 ###### Features Requests
 	1. Send notification to advocate when there is an issue that isn't completed
+	2. Make editing box easier-to-use (WYSIWYG formatting...)
+	1. Add capability to create additional documents, like court pleadings
 	   
 </details>
 
@@ -998,6 +989,9 @@ Tables are used to review "steps" and "next options"
 	
 <br>	
 Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().	
-    
+
+Next Steps
+
+Options
     
 </details>
