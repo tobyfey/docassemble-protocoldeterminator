@@ -26,8 +26,8 @@ The Protocol Determinator can be opened in Pika, and pull data from any of the t
 	
 ###### Features Requests
 1. Pull in data from other sources
-   2. Court dockets
-   3. Property lists
+    2. Court dockets
+    3. Property lists
 1. Add tab for protocol determinator
 	   
 </details>
