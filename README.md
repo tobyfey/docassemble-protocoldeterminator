@@ -116,7 +116,9 @@ docassemble uses a javascript function to put data from Pika into the fields of 
       document.getElementById('cHJvYmxlbV9jb2Rl').value = pika_js["problem"];
       // Special Problem Code
       document.getElementById('c3BlY2lhbF9wcm9ibGVtX2NvZGU').value = pika_js["sp_problem"];
-      
+
+This section also contains a script to workaround our version of Pika's limitations on the width of the interview.
+
       //this section un-squishes the docassemble interview when embedded in a Pika tab
       // div with dabody class - remove col, add container-fluid
       $(".dabody").removeClass("col");
@@ -146,6 +148,8 @@ This section is not directly connected to Airtable, but the Pika variables colle
 
 ## Selecting Specific Issues and Clones
 
+The Protocol Determinator first tries to figure out the user's legal issue by starting at the top.  Each of these choices has it's own subsets
+
 The interview allows you to pick the specific legal issue by selecting subsets within an issue and a "clone" issue when appropriate.  A clone issue is the same issue that has different information because of the different jurisdiction or the stage of the problem.
 
 <details>
@@ -172,18 +176,15 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>How it works in docassemble</summary>
 	
 <br>	
-The interview needs to complete apps.issues, a list of
-
-The first issue - the "Top" issue - is added automatically.  This is the issue object for all types of legal objects, with subsets like "Housing", "Family".  We can add the 'Top' issue by using the issue2aid dictionary in the LegalObjectsLibrary_dictionary.yml.
+When there is a reference to app.issues (which there is numerous places in the interview - in protocol matching, in the information sheet, when adding "next steps" and "options"), docassemble looks to define app.issues.  It first needs to define app.issues.there_are_any to know if it needs to start adding issues.
 
 	---
 	code: |
 	  app.issues.there_are_any = True
 	---
-	code: |
-	  app.issues[0].a_id = issues2aid['Top']
-	---
-	
+
+Since app.issues.there_are_any is true, docassemble looks to add an IssueObject, which is a subclass of DAObject.  When app.issues was defined, complete_attributes was set to complete, which means we can include a code block that defines app.issues[i].complete after listing attributes that need to be defined for each object.
+
 	---
 	code: |
 	  app.issues[i].a_id
@@ -191,11 +192,16 @@ The first issue - the "Top" issue - is added automatically.  This is the issue o
 	  app.issues[i].question_code_needed
 	  app.issues[i].complete = True
 	---
-	code: |
-	  app.issues.there_are_any = True
+
+
+The first issue - the "Top" issue - is added automatically.  This is the issue object for all types of legal objects, with subsets like "Housing", "Family".  We can add the 'Top' issue by using the issue2aid dictionary in the LegalObjectsLibrary_dictionary.yml.
+
 	---
 	code: |
 	  app.issues[0].a_id = issues2aid['Top']
+	---
+	
+
 	---
 	question:
 	  - Pick:  app
@@ -263,8 +269,13 @@ The first issue - the "Top" issue - is added automatically.  This is the issue o
 	<summary>Connected Airtable databases</summary>
 	
 <br>	
-Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().	
-    
+Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().
+
+Issues also use the tables for the types of clones
+* [TypeOfHousing]()
+* [Stage]()
+* [Jursidiction]()
+
     
 </details>
 
@@ -293,9 +304,7 @@ The necessary key to succes creating progammatic law is to make an interface tha
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-	1. Pull in data from other sources
-	   2. Court dockets
-	   3. Property lists
+	1. Legal objects need to have the ability to include only certain elements depending on the answer to a question.  LegalObjects can have a condition and only be added if that condition is true.  So for Corporate Plaintiff would have as a factObject whether the Plaintiff was a fictitious name.  Each of the elements of Corporate Plaintiff should only be added as a legal element if the Plaintiff is a fictitious name.  The Grounds legalObject has a factObject what the stated grounds in the complaint.  Each of the elements can have a condition that only adds the elements for their case - the Nonpayment LegalObject will have a condition 
 	   
 </details>
 
@@ -314,6 +323,8 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 	comment: |
 	  Adds LegalObjects to issues
 	---
+	
+This section defines app.legal_objects[i].legal_elements by looping through the .elementslist attribute, which is list of Airtable ids of other legal objects.  For each id in the list, a function is called to get information from the airtable for the legal object.  
 
 	---
 	generic object: LegalObject
@@ -325,13 +336,86 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 		if tempobject.active:
 		  x.legal_elements.append(tempobject,set_instance_name=True)
 	  x.legal_elements.gathered = True
-	comment: |
-	  Adds LegalObjects to LegalObjects.  This is where I need to add something to screen out some LegalObjects.  LegalObjects can have a condition and only be added if that condition is true.  So for Corporate Plaintiff would have as a factObject whether the Plaintiff was a fictitious name.  Each of the elements of Corporate Plaintiff should only be added as a legal element if the Plaintiff is a fictitious name.  The Grounds legalObject has a factObject what the stated grounds in the complaint.  Each of the elements can have a condition that only adds the elements for their case - the Nonpayment LegalObject will have a condition [grounds_in_the_complaint="Nonpayment"]
-	  So do I need an exec command here
+	---
+From protocoldeterminator.py:
+
+	def legob_from_a_id(a_id):
+		tempobject = LegalObject()
+		table_name = 'legalObjects'
+		required_fields = []
+		optional_fields = ['name','label','description','parent','question','explanation','elementsquestion','questioninlist','default','note','image','help','link','explanationbottom','explanationifmet','explanationifnotmet','title','law','conclusion','strength','defensename']
+		else_none_fields = ['facts_elements_interaction']
+		else_empty_fields = ['pleadingsection']
+		else_false_fields = ['active']
+		else_attribute_fields = []
+		clones_list = ['Jurisdiction','TypeOfHousing','Stage']
+		api_key=get_config('airtable api key')
+		api_response = Airtable(base_key, table_name, api_key)
+		api = api_response.get(a_id)
+		tempobject.a_id = api['id']
+		if 'field' in api['fields']:
+			tempobject.field = api['fields']['field']
+			tempobject.instanceName == api['fields']['field']
+		if 'datatype' in api['fields']:
+			tempobject.datatype = api['fields']['datatype']
+		else:
+			tempobject.datatype = 'yesnowide'
+		if 'elements' in api['fields']:
+			tempobject.elementslist = api['fields']['elements']
+		if 'facts' in api['fields']:
+			tempobject.factslist = api['fields']['facts']
+			tempobject.initializeAttribute('facts', FactObjectList)
+			if 'follabel' in api['fields']:
+				tempobject.facts.label = api['fields']['follabel']
+			if 'fact_formula' in api['fields']:
+				tempobject.facts.fact_formula = api['fields']['fact_formula']
+			if 'folhtml' in api['fields']:
+				tempobject.facts.html = api['fields']['folhtml']
+			if 'folhtmllink' in api['fields']:
+				tempobject.facts.htmllink = api['fields']['folhtmllink']
+			if 'folhtmltext' in api['fields']:
+				tempobject.facts.htmltext = api['fields']['folhtmltext']
+			if 'folexplanation' in api['fields']:
+				tempobject.facts.explanation = api['fields']['folexplanation']
+			if 'folquestion' in api['fields']:
+				tempobject.facts.question = api['fields']['folquestion']
+		for field_name in clones_list:
+			clones_string = "clones_" + field_name
+			if clones_string in api['fields']:
+				tempobject.initializeAttribute('clones', DADict.using(auto_gather=False,gathered=True))
+				tempobject.clones[field_name] = api['fields'][clones_string]
+		for field_name in clones_list:
+			cloned_string = "cloned_" + field_name
+			if cloned_string in api['fields']:
+				tempobject.initializeAttribute('cloned', DADict.using(auto_gather=False,gathered=True))
+				tempobject.cloned[field_name] = api['fields'][clones_string]
+
+This sections also has the standard code for the different types of fields(i.e. required, optional, else_none...) but it isn't included here.
+
+
+This section is necessary for Eviction Reporter defense explanation screen.
 	---
 	code: |
 	  if not defined('used_defenses'):
 		used_defenses = list()
+	---
+
+The interview determines whether LegalObjects are "met", meaning that the LegalObject is True if it helps the Plaintiff win the type of case associated with the top-level LegalObject.
+
+First, it is checked whether there are any clones of the LegalObject.  A clone is the same legal issue with different rules because of a different jurisdiction or type of housing.
+
+Next, it checks whether "facts", which is a list of FactObjects, is "met".  It checks this by prompting a FactObject question, and then using the response in a formula, as described in that block.
+
+Facts are checked first for two reasons.  First, if a LegalObject has both FactObjects and other LegalObjects as elements, it means that each of the element LegalObjects require that FactObject to be a certain answer.  For example, the Corporate Plaintiff has a FactObject about whether the Plaintiff is a corporation.  If the Plaintiff is not a corporation, then the "facts" is met, and the LegalObjects shouldn't be checked.  Right now, it doesn't work this way - if the facts.ismet = False, then the legalObject is false, and it won't need to ask the other questions.  (What about the situation where a fact object might be cuz of a defense (defense that there is no notice) but if there is notice, then these other defenses should be checked.
+
+Second, LegalObjects that are elements of a LegalObject with a FactObject may be conditioned on how that FactObject question is answered.  For example, Grounds has a FactObject of grounds_listed_in_complaint.  After asking what grounds are listed in the complaint, the LegalObjects are only relevant if the grounds listed.  So if the grounds is "Nonpayment", only the Nonpayment LegalObject will be relevant, and the Rule Violations are nto relevant (meaning they can be marked .ismet - .ismet includes not being relevant.)
+
+So I have to make it so that if in Corporate Plaintiff, is_fictitious_name = False evaluates to True, and the legal objects are not needed and the legal object is not added to defense.  If is_fictitious_name = True, the fact formula evaluates to False and the legal objects are not needed.
+
+In the case of Grounds, the fact_formula should always evaluate to False, so the legalObjects are always evaluated
+
+In a "final" LegalObject, where there are no elements, then if there is a defense, facts.ismet should be False, and then the legalobject would be False.
+
 	---
 	generic object: LegalObject
 	code: |
@@ -365,15 +449,10 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 	  if defined('x.defensename') and x.ismet is not None:
 		setattr(app.case,x.defensename,x.ismet)
 		used_defenses.append(x.defensename)
-	comment: |
-	  The interview determines whether LegalObjects are "met", meaning that the LegalObject is True if it helps the Plaintiff win the type of case associated with the top-level LegalObject.
-	  First, it is checked whether there are any clones of the LegalObject.  A clone is the same legal issue with different rules because of a different jurisdiction or type of housing.
-	  Next, it checks whether "facts", which is a list of FactObjects, is "met".  It checks this by prompting a FactObject question, and then using the response in a formula, as described in that block.
-	  Facts are checked first for two reasons.  First, if a LegalObject has both FactObjects and other LegalObjects as elements, it means that each of the element LegalObjects require that FactObject to be a certain answer.  For example, the Corporate Plaintiff has a FactObject about whether the Plaintiff is a corporation.  If the Plaintiff is not a corporation, then the "facts" is met, and the LegalObjects shouldn't be checked.  Right now, it doesn't work this way - if the facts.ismet = False, then the legalObject is false, and it won't need to ask the other questions.  (What about the situation where a fact object might be cuz of a defense (defense that there is no notice) but if there is notice, then these other defenses should be checked.
-	  Second, LegalObjects that are elements of a LegalObject with a FactObject may be conditioned on how that FactObject question is answered.  For example, Grounds has a FactObject of grounds_listed_in_complaint.  After asking what grounds are listed in the complaint, the LegalObjects are only relevant if the grounds listed.  So if the grounds is "Nonpayment", only the Nonpayment LegalObject will be relevant, and the Rule Violations are nto relevant (meaning they can be marked .ismet - .ismet includes not being relevant.)
-	  So I have to make it so that if in Corporate Plaintiff, is_fictitious_name = False evaluates to True, and the legal objects are not needed and the legal object is not added to defense.  If is_fictitious_name = True, the fact formula evaluates to False and the legal objects are not needed.
-	  In the case of Grounds, the fact_formula should always evaluate to False, so the legalObjects are always evaluated
-	  In a "final" LegalObject, where there are no elements, then if there is a defense, facts.ismet should be False, and then the legalobject would be False.
+
+
+This section determines if an legal object is "met" by seeing if each of the legal objects in the elements fields are met.  
+
 	---
 	generic object: LegalObjectList
 	code: |
@@ -385,8 +464,9 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 		x.ismet = True
 	  else:
 		x.ismet = False
-	comment: |
-	  This section determines if an legal object is "met" by seeing if each of the legal objects in the elements fields are met.  
+
+This section adds fact objects to a legal object from the AirTable.  I think I need to add in something to screen for active fact objects.
+
 	---
 	generic object: LegalObject
 	sets: 
@@ -402,7 +482,17 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 	  else:
 		x.facts.there_are_any = False
 	comment: |
-	  This section adds fact objects to a legal object from the AirTable.  I think I need to add in something to screen for active fact objects.
+	
+The formula in the AirTable is called, which looks for the definition of the variables in the formula.  Is it even necessary to have the facts as children.  A sample fact_formula looks like this
+
+	  def facts_are_met():
+		if notice_exists and notice_attached_to_complaint:
+		  return True
+		else:
+		  return False
+		  
+So are the variables in the fact_formula set, in this case "notice_exists" and "notice_attached_to_complaint".  If that is the case, then I can put things like that in the fact_formula and still just evaluate to True/False.  But what does True or False mean for something like Corporate_Plaintiff?  The LegalObject should be True if the Plaintiff is either not a corporation or if all the legal objects are met.  So the fact_formula should evaluate to True if the Plaintiff is not a corporation, and to False if
+
 	---
 	generic object: FactObjectList
 	code: |
@@ -410,13 +500,9 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 	  exec(x.fact_formula)
 	  x.ismet = facts_are_met()
 	comment: |
-	  The formula in the AirTable is called, which looks for the definition of the variables in the formula.  Is it even necessary to have the facts as children.  A sample fact_formula looks like this
-	  def facts_are_met():
-		if notice_exists and notice_attached_to_complaint:
-		  return True
-		else:
-		  return False
-	  So are the variables in the fact_formula set, in this case "notice_exists" and "notice_attached_to_complaint".  If that is the case, then I can put things like that in the fact_formula and still just evaluate to True/False.  But what does True or False mean for something like Corporate_Plaintiff?  The LegalObject should be True if the Plaintiff is either not a corporation or if all the legal objects are met.  So the fact_formula should evaluate to True if the Plaintiff is not a corporation, and to False if
+
+Facts
+
 	---
 	generic object: FactObjectList
 	sets: x[0]
@@ -442,43 +528,6 @@ The app.legal_objects DAList is first populated by any Legal Objects associated 
 	code: |
 	  if defined('finish_questions'):
 		x.factsgathered = True
-	---
-	code: |
-	  app.match_dict.new(protocols.keys())
-	  for protokey in protocols.keys():
-		app.match_dict[protokey].qualify_sentence = protocols[protokey].qualify_sentence
-		for sfkey in protocols[protokey].keys():
-		  if not set(protocols[protokey][sfkey]).isdisjoint(set(app.specific_factors[sfkey])):
-		    app.match_dict[protokey][sfkey] = True
-		  else:
-		    app.match_dict[protokey][sfkey] = False
-		    app.match_dict[protokey].gathered = True
-		    break
-		app.match_dict[protokey].gathered = True
-	  app.match_dict.gathered = True
-	comment: |
-	  This section determines if each requirement in the protocol is satisfied by seeing if there is any overlap between the protocol's set of airtable ids in protocols['HCED1a']['County'] with the set of AirTable ids from the same table in specific_factors['County'].  If there is an overlap (or not disjoint), then it will set match_dict['HCED1a']['County'] to True.  A block below with then see if the all of the factors in match_dict['HCED1a'] are true.
-	---
-	generic object: Protocol
-	code: |
-	  exec(x.qualify_sentence)
-	  x.qualify = qualify()
-	comment: |
-	  This section runs the qualify_sentence from the Protocols table, which will look something like this:
-	  
-	  def qualify():
-		if date_of_hearing > date_intake_completed.plus(days=3):
-		  if domestic_violence or sexual_assault or stalking:
-		    return 1
-		  elif disability_household_member:
-		    return 1
-		  else:
-		    return 0
-		else:
-		  return 0
-		
-	  The formula statement uses FactObject variable names and causes the interview to ask questions to define those variables.  Why does this one use "Good" or "Bad"?  That's obviously a mistake.  The next block tests to see if it is equal to 1.  So this protocol will never "qualify".
-	---
 	generic object: LegalObject
 	code: |
 	  if hasattr(x,'clones') and len(x.clones) > 0:
@@ -630,6 +679,43 @@ Protocols are inputted at the beginning
 	  x[i].there_is_another = False
 	comment: |
 	  WHAT DOES THIS DO?? Why isn't this 
+	---
+	---
+	code: |
+	  app.match_dict.new(protocols.keys())
+	  for protokey in protocols.keys():
+		app.match_dict[protokey].qualify_sentence = protocols[protokey].qualify_sentence
+		for sfkey in protocols[protokey].keys():
+		  if not set(protocols[protokey][sfkey]).isdisjoint(set(app.specific_factors[sfkey])):
+		    app.match_dict[protokey][sfkey] = True
+		  else:
+		    app.match_dict[protokey][sfkey] = False
+		    app.match_dict[protokey].gathered = True
+		    break
+		app.match_dict[protokey].gathered = True
+	  app.match_dict.gathered = True
+	comment: |
+	  This section determines if each requirement in the protocol is satisfied by seeing if there is any overlap between the protocol's set of airtable ids in protocols['HCED1a']['County'] with the set of AirTable ids from the same table in specific_factors['County'].  If there is an overlap (or not disjoint), then it will set match_dict['HCED1a']['County'] to True.  A block below with then see if the all of the factors in match_dict['HCED1a'] are true.
+	---
+	generic object: Protocol
+	code: |
+	  exec(x.qualify_sentence)
+	  x.qualify = qualify()
+	comment: |
+	  This section runs the qualify_sentence from the Protocols table, which will look something like this:
+	  
+	  def qualify():
+		if date_of_hearing > date_intake_completed.plus(days=3):
+		  if domestic_violence or sexual_assault or stalking:
+		    return 1
+		  elif disability_household_member:
+		    return 1
+		  else:
+		    return 0
+		else:
+		  return 0
+		
+	  The formula statement uses FactObject variable names and causes the interview to ask questions to define those variables.  Why does this one use "Good" or "Bad"?  That's obviously a mistake.  The next block tests to see if it is equal to 1.  So this protocol will never "qualify".
 	---
 
 
