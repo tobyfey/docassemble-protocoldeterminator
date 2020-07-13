@@ -268,9 +268,9 @@ The first issue - the "Top" issue - is added automatically.  This is the issue o
 Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().
 
 Issues also use the tables for the types of clones
-* [TypeOfHousing]()
-* [Stage]()
-* [Jursidiction]()
+* [TypeOfHousing](https://airtable.com/shr034KsfEoIz3Mzs)
+* [Stage](https://airtable.com/shrcG2ZJXlyahXdgA)
+* [Jursidiction](https://airtable.com/shr8WGEnZJRyqpZzv)
 
     
 </details>
@@ -559,7 +559,9 @@ Facts
 <br>	
 Issue Objects have a field legalObjects, which is a list of Airtable ids of rows in the legalobjects tab.
 
-Legal Objects are in the LegalObjectLibrary base in the legalobjects tab. [Here is a viewy]().	
+[Legal Objects are in the LegalObjectLibrary base in the legalobjects tab.](https://airtable.com/shrhdjicHfPCshTR9).	
+
+[Legal Objects use FactObjects, which are in the facts table](https://airtable.com/shrX1kOBjQeSxcJjC)
     
     
 </details>
@@ -718,7 +720,7 @@ Protocols are inputted at the beginning
 	<summary>Connected Airtable databases</summary>
 	
 <br>	
-Protocols are in the LegalObjectLibrary base in the protocols tab. [Here is a viewy]().	
+[Protocols are in the LegalObjectLibrary base in the protocols tab](https://airtable.com/shrTlwMeSsf0ZZ7n2).	
     
     
 </details>
@@ -984,10 +986,9 @@ Tables are used to review "steps" and "next options"
 	<summary>Connected Airtable databases</summary>
 	
 <br>	
-Issue Objects are in the LegalObjectLibrary base in the issues tab. [Here is a viewy]().	
+[Options](https://airtable.com/shrCI8GCcI9MEbTm2).	
 
-Next Steps
+[Next Steps](https://airtable.com/shrP4d2gKAMG3oVyC)
 
-Options
     
 </details>
