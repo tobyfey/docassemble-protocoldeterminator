@@ -727,17 +727,9 @@ Protocols are inputted at the beginning
 
 ## Options
 
-After finding the user's specific legal info, the Protocol Determinator gathers the specific legal information that is most helpful from the issues and clones identified, including plain english explanations and next steps and options.
+A crucial aspect of legal representation, from high-paid corporate attorneys to free legal aid, is to help the client make the decision about what option to choose.
 
-The infosheet is organized into 3 parts to give the user the "news they can use":
-
-1. Explanations
-1. Next Steps
-1. Options
-
-The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information gathered.  The advocate can organize this information that is most understandable and create an "explanation block" for the first section.  An advocate can reorder, delete or add next steps and options.  The Protocol Determinator allows the user to save their changes to the library, so the library continues to grow and approve.
-
-If an "explanation block" has already been created for an issue, then an information sheet can be simply reviewed and accepted, or edited if necessary.
+Options are gathered from IssueObject, LegalObjects, and Protocols (protocols can determine whether an option - such as a referral for other service - applies).
 
 
 <details>
@@ -995,17 +987,11 @@ Tables are used to review "steps" and "next options"
 
 ## Next Steps
 
-After finding the user's specific legal info, the Protocol Determinator gathers the specific legal information that is most helpful from the issues and clones identified, including plain english explanations and next steps and options.
+Next steps are actions or things the user must do, gathered from IssueObjects, LegalObjects or options.
 
-The infosheet is organized into 3 parts to give the user the "news they can use":
+Next steps can have information sheets or documents tied to them.
 
-1. Explanations
-1. Next Steps
-1. Options
-
-The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information gathered.  The advocate can organize this information that is most understandable and create an "explanation block" for the first section.  An advocate can reorder, delete or add next steps and options.  The Protocol Determinator allows the user to save their changes to the library, so the library continues to grow and approve.
-
-If an "explanation block" has already been created for an issue, then an information sheet can be simply reviewed and accepted, or edited if necessary.
+Includes a timeline created by the Stage clones of the Issue or Legal Object.
 
 
 <details>
@@ -1261,13 +1247,7 @@ Tables are used to review "steps" and "next options"
 
 ## Creating Information Sheets
 
-After finding the user's specific legal info, the Protocol Determinator gathers the specific legal information that is most helpful from the issues and clones identified, including plain english explanations and next steps and options.
-
-The infosheet is organized into 3 parts to give the user the "news they can use":
-
-1. Explanations
-1. Next Steps
-1. Options
+The final step is to present all of information from IssueObjects, LegalObjects, Protocols, OptionObjects, and NextStepObjects to the user in the most user-friendly way.
 
 The first time a new issue, or a new clone of an existing issue, an advocate will be presented with legal information gathered.  The advocate can organize this information that is most understandable and create an "explanation block" for the first section.  An advocate can reorder, delete or add next steps and options.  The Protocol Determinator allows the user to save their changes to the library, so the library continues to grow and approve.
 
