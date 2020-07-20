@@ -163,7 +163,7 @@ The interview allows you to pick the specific legal issue by selecting subsets w
 	<summary>Features Requests</summary>
 	
 ###### Features Requests
-1. Most common
+1. Add a "Most common" option to selecting subsets.
 2. Machine learning - guess issue using Suffolk API
 	   
 </details>
@@ -184,6 +184,7 @@ Since app.issues.there_are_any is true, docassemble looks to add an IssueObject,
 	---
 	code: |
 	  app.issues[i].a_id
+	  app.issues[i].at_added
 	  app.issues[i].no_more_preclones
 	  app.issues[i].question_code_needed
 	  app.issues[i].complete = True
@@ -196,21 +197,130 @@ The first issue - the "Top" issue - is added automatically.  This is the issue o
 	code: |
 	  app.issues[0].a_id = issues2aid['Top']
 	---
-	
+
+Once the a_id attribute is defined, the complete block next requires the "at_added" block to be defined.  This administrative attribute is set by a code block that gets information from the Airtable using a function.
 
 	---
-	question:
-	  - Pick:  app
+	code: |
+	  app.issues[i].get_issue_from_a_id(app.issues[].a_id)
+	  app.issues[i].at_added = True
+	---
+
+The function is set by an IssueObject method in lol.py:
+
+	def get_issue_from_a_id(self, a_id)
+		table_name = 'issues'
+		required_fields = ['name','id_calculated','explanation']
+		optional_fields = ['parent','legalObjects']
+		else_none_fields = ['definition','description']
+		else_empty_fields =['title','subtitle','explanation','why','warning','HOW','requirement','Translation','law']
+		else_false_fields = ['active','most_common']
+		else_attribute_fields = []
+		preclones = ['TypeOfHousing','Jurisdiction']
+		postclones = ['Stage']
+		allclones = []
+		allclones.extend(preclones)
+		allclones.extend(postclones)
+		api_key=get_config('airtable api key')
+		api_response = Airtable(base_key, table_name, api_key)
+		if 'subsets' in api['fields']:
+			self.initializeAttribute('subsets', DAList)
+			self.subsets.extend(api['fields']['subsets'])
+			self.subsets.there_is_another = False
+		if "steps" in api['fields'] and len(api['fields']['steps']) > 0:
+			self.initializeAttribute('steps', DAList)
+			for stepid in api['fields']['steps']:
+			  self.steps.append(other_from_a_id(stepid,'steps'))
+			self.steps.gathered = True
+		if "options" in api['fields'] and len(api['fields']['options']) > 0:
+			self.initializeAttribute('options', DAList)
+			for options_id in api['fields']['options']:
+			  self.options.append(other_from_a_id(options_id,'options'))
+			self.options.gathered = True
+		for field_name in preclones:
+			clones_string = "clones_" + field_name
+			if clones_string in api['fields']:
+				self.initializeAttribute('preclones', DADict.using(auto_gather=False,gathered=True))
+				self.preclones[field_name] = api['fields'][clones_string]
+		if hasattr(self,'preclones'):
+			self.more_preclones = True
+		else:
+			self.more_preclones = False
+		for field_name in postclones:
+			clones_string = "clones_" + field_name
+			if clones_string in api['fields']:
+				self.initializeAttribute('postclones', DADict.using(auto_gather=False,gathered=True))
+				self.postclones[field_name] = api['fields'][clones_string]
+		for field_name in allclones:
+			clones_string = "cloned_" + field_name
+			if clones_string in api['fields']:
+				self.initializeAttribute('cloned', DADict.using(auto_gather=False,gathered=True))
+				self.cloned[field_name] = api['fields'][clones_string]
+		for field_name in required_fields:
+			setattr(self, field_name, api['fields'][field_name])
+		for field_name in optional_fields:
+			if field_name in api['fields']:
+				setattr(self, field_name, api['fields'][field_name])
+		for field_name in else_none_fields:
+			if field_name in api['fields']:
+				setattr(self, field_name, api['fields'][field_name])
+			else:
+				setattr(self, field_name, None)
+		for field_name in else_empty_fields:
+			if field_name in api['fields']:
+				setattr(self, field_name, api['fields'][field_name])
+			else:
+				setattr(self, field_name, "")
+		for field_name in else_false_fields:
+			if field_name in api['fields']:
+				setattr(self, field_name, api['fields'][field_name])
+			else:
+				setattr(self, field_name, False)
+		for field_name in else_attribute_fields:
+			no_field_name = "no_" + field_name
+			if field_name in api['fields']:
+				setattr(self, field_name, api['fields'][field_name])
+				setattr(self, no_field_name, False)
+			else:
+				setattr(self, no_field_name, True)
+		return self
+
+
+
+Next in the complete block is no_more_preclones.  Since the "Top" IssueObjects doesn't have any preclones, no_more_preclones will be marked True by the following block, so we won't explain preclones until later.
+
+	---
+	code: |
+	  if app.issues[i].more_preclones = False:
+	    app.issues[i].no_more_preclones = True
+	---
+
+Because Top has subsets (such as "Housing","Family"... all the top-level NSMI codes), the attribute questioncode_needed will be set to True, and the attribute questioncode will be created.  The question is a list of dictionaries, which can be used in docassemble as (explained here)[https://docassemble.org/docs/fields.html#code]  The dictionary will be the airtable id as the value and the name of the airtable id (found in LegalElementsLibrary dictionary) as the field.
+
+	---
+	code: |
+	  if app.issues[i].more_subsets = False:
+	    questioncode_needed = False
+	  else:
+	    app.issues[i].questioncode = list()
+	    for subset in app.issues[i].subsets:
+	      app.issues[i].questioncode.append({subset:aid2issues[subset]})
+	    questioncode_needed = True
+	---
+With quetioncode_needed defined, the complete block is completed.  This means that all the attributes for the most recent addition to app.issues have been created.  Since that issue has been added, docassemble needs to know if there is another issue, and looks for app.issues.there_is_another
+
+The questioncode attribute is used in a question block that allows the user to pick the subset that applies.  The user can also pick "None" or "Other"
+
 	---
 	question: ${ app.issues.complete_elements().last().title }
 	fields:
 	  - Pick any applicable subset: app.issues[i].a_id
-    code: app.issues.complete_elements().last().question_code
-	under:
-	comment: |
-	  This question sets the .a_id attribute for a new issue, which is the first attribute sought when adding a new IssueObject.  The question uses the .subsets attribute of the last IssueObject (a list of Airtable ids of IssueObjects)
-	  The question also lets the user choose "None" or "Other".  Choosing "Other" will require the user to name the other IssueObject.
-	  Users can also edit the current IssueObject,
+    	    code: app.issues.complete_elements().last().question_code
+	
+The under section in the question block allows the user to see all the stored information about the legal issue.
+
+
+
 	---
 	code: |
 	  if app.issues[i].a_id == "None":
