@@ -307,7 +307,26 @@ Because Top has subsets (such as "Housing","Family"... all the top-level NSMI co
 	      app.issues[i].questioncode.append({subset:aid2issues[subset]})
 	    questioncode_needed = True
 	---
-With quetioncode_needed defined, the complete block is completed.  This means that all the attributes for the most recent addition to app.issues have been created.  Since that issue has been added, docassemble needs to know if there is another issue, and looks for app.issues.there_is_another
+	
+	code: |
+	  app.issues[i].question_code = list()
+	  for issue_id in api.issues[i].subsets:
+     	    tempdict = dict()
+            tempdict[issue_id] = aid2issues[issue_id]
+            app.issues[i].question_code.append(tempdict)
+	  app.issues[i].question_code.append({"None":"None"})
+	  app.issues[i].question_code.append({"Other":"Other"})
+	---
+With questioncode_needed defined, the complete block is completed.  This means that all the attributes for the most recent addition to app.issues have been created.  Since that issue has been added, docassemble needs to know if there is another issue, and looks for app.issues.there_is_another
+
+	---
+	code: |
+	  if app.issues.complete_elements().last().questioncode_needed: 
+	    app.issues.there_is_another = True
+	  else:
+	    app.issues.there_is_another = False   
+	---
+Since there is another IssueObject, the complete_attribute block starts again.  This time, the a_id is set by a question block, which uses the last issue objects's questioncode
 
 The questioncode attribute is used in a question block that allows the user to pick the subset that applies.  The user can also pick "None" or "Other"
 
@@ -319,39 +338,95 @@ The questioncode attribute is used in a question block that allows the user to p
 	
 The under section in the question block allows the user to see all the stored information about the legal issue.
 
+	under: |
+
+	  % if not x.title == "":
+	  TITLE: ${ x.title }
+	  % endif
+
+	  % if not x.subtitle == "":
+	  SUBTITLE: ${ x.subtitle }
+	  % endif
+
+	  % if not x.definition == "":
+	  DEFINITION: ${ x.definition }
+	  % endif
+
+	  % if not x.explanation == "":
+	  EXPLANATION: ${ x.explanation }
+	  % endif
+
+	  % if not x.HOW == "":
+	  HOW: ${ x.HOW }
+	  % endif
+
+	  % if not x.why == "":
+	  WHY: ${ x.why }
+	  % endif
+
+	  % if not x.warning == "":
+	  WARNING: ${ x.warning }
+	  % endif
+
+	  % if not x.requirement == "":
+	  REQUIREMENT: ${ x.requirement }
+	  % endif
+
+	  % if not x.Translation == "":
+	  TRANSLATION: ${ x.Translation }
+	  % endif
+
+	  % if not x.law == "":
+	  LAW: ${ x.law }
+	  % endif
+
+	  You can [edit this information](${ url_action('review_answers') }).
+
+The last line allows the user to edit any of this information associated with the issue.
+
+This code block from review_answer.yml is the event called
 
 
+if None is selected, this block sets  .question_code_need and .no_more_preclones to false, so that no more issues will be collected.  Other will call an event
 	---
 	code: |
 	  if app.issues[i].a_id == "None":
-    app.issues[i].question_code_needed = False
-    app.issues[i].no_more_preclones = True
+	    app.issues[i].question_code_needed = False
+	    app.issues[i].no_more_preclones = True
 	  elif x.a_id == "Other":
-    app.issues[i].new_object_added
+	    app.issues[i].at_added = True
+    	    app.issues[i].new_object_added
 	  else:
-    app.issues[i].get_issue_from_aid()
+            app.issues[i].get_issue_from_a_id()
+	    app.issues[i].at_added = True
 	---
-	code: |
-	  app.issues[i].question_code = list()
-	  for issue_id in api.issues[i].subsets:
-    tempdict = dict()
-    tempdict[issue_id] = aid2issues[issue_id]
-    app.issues[i].question_code.append(tempdict)
-	  app.issues[i].question_code.append({"None":"None"})
-	  app.issues[i].question_code.append({"Other":"Other"})
-	---
+
+The event new_object_added will call the same question block called by the review block.  It also sets at_added to True, so
+
+ADD IN new_object_added event.
+
 	---
 	question:
 	continue button field: x.new_object_added
+
+So let's imagine we added a new issue, such as Eviction Court Action, that has preclones.  Docassemble needs to set no_more_preclones,   Since running the other block that sets no_more_preclones if more_preclones is False, it uses this piece of code block to use the clone_from_a_ id function to add a clone.  When a clone is added, that clone will be removed from the list of preclones.  This block will reconsider the number_of_preclones and will run again, but count one less preclone than before, which may get it to zero.
+
+
 	---
 	code: |
 	  number_of_preclones = len(app.issues[i].preclones)
 	  if number_of_preclones == 0:
-    app.issues[i].no_more_preclones = True
+            app.issues[i].no_more_preclones = True
 	  else:
-    app.issues[i].clone_from_aid(clone_aid+
-    reconsider('number_of_preclones')
+            app.issues[i].clone_from_aid(clone_aid+
+            reconsider('number_of_preclones')
 	---
+
+clone_from_a_id method
+
+
+To get the clone_aid, the user will use this question block
+	
 	question:
 	fields:
 	  - Attached, existing or new clone: app.issues[i].new_clone
@@ -362,6 +437,9 @@ The under section in the question block allows the user to see all the stored in
 	comment: |
 	  
 	---
+
+This block deals with choosing an existing clone
+
 	if: app.issues[i].existing_clone
 	code: |
 	  update_clone_list
