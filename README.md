@@ -438,7 +438,9 @@ To get the clone_aid, the user will use this question block
 	  
 	---
 
-This block deals with choosing an existing clone
+After all the issues are collected, if the last clone has any postclones, then 
+
+
 
 	if: app.issues[i].existing_clone
 	code: |
